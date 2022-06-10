@@ -1,0 +1,4 @@
+Sistem Informasi Manajemen Peminjaman Komponen Gedung AI POLINEMA
+
+User: Admin
+Pw : Admin
