@@ -189,15 +189,31 @@ class Peminjaman extends CI_Controller {
 	}
 
 	public function export_rekap(){
-		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full();
-		$this->data['title'] = 'Rekap Laporan Data peminjaman';
-		$this->data['no'] = 1;
+		$data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full();
+		$data['title'] = 'Rekap Riwayat Transaksi Peminjaman';
+		$data['no'] = 1;
 
 		$this->load->library('pdf');
-
+		$this->pdf->set_option('isRemoteEnabled', true);
 	    $this->pdf->setPaper('A4', 'potrait');
-	    $this->pdf->filename = "laporan-petanikode.pdf";
+	    $this->pdf->filename = 'Riwayat Transaksi Peminjaman ('.date('d-M-Y').').pdf';
+	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
+	}
+
+	public function export_rekap_filter(){
+		$data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'));
+		$data['title'] = 'Rekap Riwayat Transaksi Peminjaman';
+		if ($this->input->post('tanggal_awal') == $this->input->post('tanggal_akhir')) {
+			$data['periode'] = $this->input->post('tanggal_awal');
+		} else {
+			$data['periode'] = $this->input->post('tanggal_awal').' sampai '.$this->input->post('tanggal_akhir');
+		}
+		$data['no'] = 1;
+
+		$this->load->library('pdf');
+		$this->pdf->set_option('isRemoteEnabled', true);
+	    $this->pdf->setPaper('A4', 'potrait');
+	    $this->pdf->filename = 'Riwayat Transaksi Peminjaman Periode'.$data['periode'].' ('.date('d-M-Y').').pdf';
 	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
 	}
 }

@@ -165,6 +165,26 @@ class M_peminjaman extends CI_Model {
 		return $query->num_rows();
 	}
 
+	public function cek_jumlah_tanggungan($kode_pengguna){
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
+		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
+		$this->db->where('status', '3');
+		$this->db->where('pengguna.kode_pengguna', $kode_pengguna);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
+	public function cek_data_tanggungan($kode_pengguna){
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
+		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
+		$this->db->where('pengguna.kode_pengguna', $kode_pengguna);
+		return $this->db->get($this->_table)->result();
+	}
+
 	public function lihat_id($id){
 		return $this->db->get_where($this->_table, ['id' => $id])->row();
 	}

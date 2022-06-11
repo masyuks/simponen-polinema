@@ -137,7 +137,7 @@
 												Terdapat <strong><?= $jumlah_pengajuan ?> peminjaman</strong> yang perlu disetujui
 											</div>
 										<?php } ?>
-										<?php if ($jumlah_pengajuan > 0) { ?>
+										<?php if ($jumlah_tanggungan > 0) { ?>
 											<div class="alert alert-danger alert-dismissible fade show" role="alert">
 												<strong><?= $jumlah_tanggungan ?> mahasiswa</strong> memiliki tanggungan yang harus diselesaikan
 											</div>

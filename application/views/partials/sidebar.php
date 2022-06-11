@@ -14,11 +14,46 @@
 					<i class="fas fa-fw fa-tachometer-alt"></i>
 					<span>Dashboard</span></a>
 			</li>
+			<li class="nav-item <?= $aktif == 'cek-bebas' ? 'active' : '' ?>">
+				<a class="nav-link" href="#" data-toggle="modal" data-target="#cekModal">
+					<i class="fas fa-fw fa-search"></i>
+					<span>Cek Bebas Peminjaman</span>
+				</a>
+				<div class="modal fade" id="cekModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<form action="<?= base_url('dashboard/cek') ?>" id="form-filter" method="POST">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Cek Bebas Tanggungan Peminjaman</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="message-text" class="col-form-label">NIM</label>
+										<input type="number" name="kode_pengguna" value="" placeholder="Masukkan NIM" class="form-control" required>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</li>
 			<?php } else { ?>
 			<li class="nav-item <?= $aktif == 'dashboard' ? 'active' : '' ?>">
 				<a class="nav-link" href="<?= base_url('dashboard/mahasiswa') ?>">
 					<i class="fas fa-fw fa-tachometer-alt"></i>
 					<span>Dashboard</span></a>
+			</li>
+			<li class="nav-item <?= $aktif == 'cek-bebas' ? 'active' : '' ?>">
+				<a class="nav-link" href="<?= base_url('dashboard/cek') ?>">
+					<i class="fas fa-fw fa-search"></i>
+					<span>Cek Bebas Pinjaman</span></a>
 			</li>
 			<?php } ?>
 

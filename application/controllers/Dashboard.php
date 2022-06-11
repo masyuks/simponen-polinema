@@ -33,4 +33,22 @@ class Dashboard extends CI_Controller {
 		$this->data['jumlah_selesai'] = $this->m_peminjaman->jumlah_selesai_mahasiswa();
 		$this->load->view('dashboard-mahasiswa', $this->data);
 	}
+
+	public function cek(){
+		$this->data['aktif'] = 'cek-bebas';
+		$this->data['title'] = 'Cek Bebas Pinjaman';
+		if ($this->session->login['role'] == 'teknisi') {
+			$kode_pengguna = $this->input->post('kode_pengguna');
+		} else {
+			$kode_pengguna = $this->session->login['kode'];
+		}
+		$this->data['jumlah_pengguna'] = $this->m_pengguna->lihat_jumlah_kode($kode_pengguna);
+		if ($this->data['jumlah_pengguna'] > 0) {
+			$this->data['data_pengguna'] = $this->m_pengguna->lihat_data_by_kode($kode_pengguna);
+		}
+		$this->data['kode_pengguna'] = $kode_pengguna;
+		$this->data['jumlah_tanggungan'] = $this->m_peminjaman->cek_jumlah_tanggungan($kode_pengguna);
+		$this->data['all_peminjaman'] = $this->m_peminjaman->cek_data_tanggungan($kode_pengguna);
+		$this->load->view('cek-bebas-pinjaman', $this->data);
+	}
 }

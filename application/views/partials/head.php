@@ -1,3 +1,10 @@
+	<?php
+	$page = $_SERVER['PHP_SELF'];
+	$sec = "300";
+	?>
+	<!-- Auto Refresh In 5 Minutes -->
+	<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

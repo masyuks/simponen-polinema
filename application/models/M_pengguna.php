@@ -28,6 +28,16 @@ class M_pengguna extends CI_Model{
 		return $query->row();
 	}
 
+	public function lihat_jumlah_kode($kode_pengguna){
+		$query = $this->db->get_where($this->_table, ['kode_pengguna' => $kode_pengguna]);
+		return $query->num_rows();
+	}
+
+	public function lihat_data_by_kode($kode_pengguna){
+		$query = $this->db->get_where($this->_table, ['kode_pengguna' => $kode_pengguna]);
+		return $query->result();
+	}
+
 	public function tambah($data){
 		return $this->db->insert($this->_table, $data);
 	}

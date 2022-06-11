@@ -7,26 +7,40 @@
 </head>
 <body>
 	<div class="row">
-		<div class="col text-center">
-			<h3 class="h3 text-dark"><?= $title ?></h3>
-			<!-- <h4 class="h4 text-dark "><strong><?= $perusahaan->nama_perusahaan ?></strong></h4> -->
+		<br>
+		<img src="<?=base_url()?>assets/img/polinema-loss.png" style="width: 80px; margin-left: 3%;">
+		<img src="<?=base_url()?>assets/img/kan-logo.jpg" style="width: 85px; margin-left: 71%;">
+		<div class="col-8 text-center" style="margin-top: -90px; margin-left: 100px;">
+			<span style="font-family: serif; color: black;">
+				<strong>KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN <br> POLITEKNIK NEGERI MALANG </strong> <br> Jalan Soekarno-Hatta No.9 Malang 65141 <br>
+				Telp (0341) 404424-404425 Fax (0341) 404420
+			</span>
 		</div>
 	</div>
-	<hr>
-	<div class="row">
-		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	<hr style="border-top: 2px solid black;">
+	<div class="row" style="margin-left: 5px;">
+		<span style="font-family: serif; color: black; font-weight: bold; font-size: 20px;">
+			<center>
+				<?= $title; ?>
+			</center>
+		</span>
+		<br>
+		<span style="font-family: serif; color: black; font-size: 15px;">
+			<b>Periode :</b> <?php if (isset($periode)) { echo $periode; } else { echo 'Semua Transaksi Peminjaman'; } ?>
+		</span>
+		<br> 
+		<br>
+		<table style="color: black; text-align: center;" border="1" width="97%">
 			<thead>
 				<tr>
-					<td>NIM</td>
-					<td>Nama Mahasiswa</td>
-					<td>Dosen</td>
-					<td>Waktu Pinjam</td>
-					<td>Waktu Kembali</td>
-					<td>Kode Barang</td>
-					<td>Barang</td>
-					<td>Jumlah</td>
-					<td>Status</td>
-					<td>Keterangan</td>
+					<th>NIM</th>
+					<th>Nama Mahasiswa</th>
+					<th>Waktu Pinjam</th>
+					<th>Waktu Kembali</th>
+					<th>Kode Barang</th>
+					<th>Jumlah</th>
+					<th>Status</th>
+					<th>Keterangan</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,11 +48,9 @@
 					<tr>
 						<td><?= $peminjaman->nim ?></td>
 						<td><?= $peminjaman->nama_pengguna ?></td>
-						<td><?= $peminjaman->nama_dosen ?></td>
 						<td><?= $peminjaman->waktu_pinjam ?></td>
 						<td><?= $peminjaman->waktu_kembali ?></td>
 						<td><?= $peminjaman->kode_barang ?></td>
-						<td><?= $peminjaman->nama_barang ?></td>
 						<td><?= $peminjaman->jumlah ?></td>
 						<td><?php
 						if ($peminjaman->status == '1') {
@@ -60,5 +72,17 @@
 		</tbody>
 	</table>
 </div>
+<br><br>
+<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+	Penanggung Jawab
+</span>
+<br><br><br><br>
+<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+	<?php echo $this->session->login['nama']; ?>
+</span>
+<script src="<?= base_url('sb-admin') ?>/vendor/jquery/jquery.min.js"></script>
+<script src="<?= base_url('sb-admin') ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('sb-admin') ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="<?= base_url('sb-admin') ?>/js/sb-admin-2.min.js"></script>
 </body>
 </html>
