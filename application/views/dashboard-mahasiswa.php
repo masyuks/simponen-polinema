@@ -44,8 +44,8 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Jumlah Barang</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah_barang ?></div>
+											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Jumlah Pinjaman Diajukan</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah_pengajuan ?></div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-box fa-2x text-gray-300"></i>
@@ -61,8 +61,8 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Jumlah Teknisi</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah_teknisi ?></div>
+											<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Jumlah Pinjaman Diterima</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah_diterima ?></div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-cash-register fa-2x text-gray-300"></i>
@@ -78,10 +78,10 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jumlah Proses Peminjaman</div>
+											<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jumlah Peminjaman Selesai</div>
 											<div class="row no-gutters align-items-center">
 												<div class="col-auto">
-													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $jumlah_diterima ?></div>
+													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $jumlah_selesai ?></div>
 												</div>
 											</div>
 										</div>
@@ -99,8 +99,8 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Jumlah Pengguna</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah_pengguna ?></div>
+											<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Jumlah Tanggungan</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah_tanggungan ?></div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-users fa-2x text-gray-300"></i>
@@ -114,48 +114,79 @@
 					<div class="row">
 						<div class="col-md-8">
 							<div class="card shadow">
-								<div class="card-header"><strong>Data Login</strong></div>
+								<div class="card-header"><strong>Data Tanggungan</strong></div>
 								<div class="card-body">
-									<strong>Nama : </strong><br>
-									<input type="text" value="<?= $this->session->login['nama'] ?>" readonly class="form-control mt-2 mb-2">
-									<strong>Username : </strong><br>
-									<input type="text" value="<?= $this->session->login['username'] ?>" readonly class="form-control mt-2 mb-2">
-									<strong>Role : </strong><br>
-									<input type="text" value="<?= $this->session->login['role'] ?>" readonly class="form-control mt-2 mb-2">
-									<strong>Jam Login : </strong><br>
-									<input type="text" value="<?= $this->session->login['jam_masuk'] ?>" readonly class="form-control mt-2">
-								</div>				
-							</div>
+									<div class="table-responsive">
+										<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<td>Dosen</td>
+													<td>Waktu Pinjam</td>
+													<td>Waktu Kembali</td>
+													<td>Status</td>
+													<td>Aksi</td>
+												</tr>
+											</thead>
+											<tbody>
+												<?php foreach ($all_peminjaman as $peminjaman): ?>
+													<?php if ($peminjaman->status == '3') { ?>
+														<tr>
+															<td><?= $peminjaman->nama_dosen ?></td>
+															<td><?= $peminjaman->waktu_pinjam ?></td>
+															<td><?= $peminjaman->waktu_kembali ?></td>
+															<td><?php
+															if ($peminjaman->status == '1') {
+																echo "Diajukan";
+															} else if ($peminjaman->status == '2') {
+																echo "Diterima";
+															} else if ($peminjaman->status == '3') {
+																echo "Tanggungan";
+															} else if ($peminjaman->status == '4') {
+																echo "Selesai";
+															} else if ($peminjaman->status == '5') {
+																echo "Ditolak";
+															} 
+															?>
+														</td>
+														<td>
+															<a href="<?= base_url('peminjaman/detail/' . $peminjaman->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+														</td>
+													</tr>
+												<?php } ?>
+											<?php endforeach ?>
+										</tbody>
+									</table>
+								</div>
+							</div>				
 						</div>
-						<div class="col-md-4">
-							<div class="card shadow">
-								<div class="card-header"><strong>Notifikasi</strong></div>
-								<div class="card-body">
-									<?php if ($this->session->login['role'] == 'teknisi') { ?>
-										<?php if ($jumlah_pengajuan > 0) { ?>
-											<div class="alert alert-danger alert-dismissible fade show" role="alert">
-												Terdapat <strong><?= $jumlah_pengajuan ?> peminjaman</strong> yang perlu disetujui
-											</div>
-										<?php } ?>
-										<?php if ($jumlah_pengajuan > 0) { ?>
-											<div class="alert alert-danger alert-dismissible fade show" role="alert">
-												<strong><?= $jumlah_tanggungan ?> mahasiswa</strong> memiliki tanggungan yang harus diselesaikan
-											</div>
-										<?php } ?>
-									<?php } ?>
-								</div>				
-							</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card shadow">
+							<div class="card-header"><strong>Notifikasi</strong></div>
+							<div class="card-body">
+								<?php if ($jumlah_tanggungan > 0) { ?>
+									<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										Anda memiliki <strong><?= $jumlah_tanggungan ?> tanggungan</strong> yang harus diselesaikan
+									</div>
+								<?php } ?>
+								<?php if ($jumlah_diterima > 0) { ?>
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										<strong><?= $jumlah_pengajuan ?> pengajuan</strong> peminjaman anda telah diterima
+									</div>
+								<?php } ?>
+							</div>				
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- load footer -->
-			<?php $this->load->view('partials/footer.php') ?>
 		</div>
+		<!-- load footer -->
+		<?php $this->load->view('partials/footer.php') ?>
 	</div>
-	<?php $this->load->view('partials/js.php') ?>
-	<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
-	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+</div>
+<?php $this->load->view('partials/js.php') ?>
+<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
+<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 </body>
 </html>

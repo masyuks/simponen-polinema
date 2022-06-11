@@ -66,7 +66,7 @@ class Login extends CI_Controller{
 
 				$this->session->set_userdata('login', $session);
 				$this->session->set_flashdata('success', '<strong>Login</strong> Berhasil!');
-				redirect('dashboard');
+				redirect('dashboard/mahasiswa');
 			} else {
 				$this->session->set_flashdata('error', 'Password Salah!');
 				redirect();

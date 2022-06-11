@@ -124,6 +124,47 @@ class M_peminjaman extends CI_Model {
 		return $query->num_rows();
 	}
 
+	public function jumlah_mahasiswa(){
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
+	public function jumlah_tanggungan_mahasiswa(){
+		$this->db->where('status', '3');
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
+	public function jumlah_pengajuan_mahasiswa(){
+		$this->db->where('status', '1');
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
+	public function jumlah_selesai_mahasiswa(){
+		$this->db->where('status', '4');
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
+	public function jumlah_ditolak_mahasiswa(){
+		$this->db->where('status', '5');
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
+	public function jumlah_diterima_mahasiswa(){
+		$this->db->where('status', '2');
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		$query = $this->db->get($this->_table);
+		return $query->num_rows();
+	}
+
 	public function lihat_id($id){
 		return $this->db->get_where($this->_table, ['id' => $id])->row();
 	}

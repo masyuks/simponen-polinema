@@ -8,11 +8,19 @@
 				<!-- <div class="sidebar-brand-text mx-3">SIMASET Polinema</div> -->
 			</a>
 			<hr class="sidebar-divider my-0">
+			<?php if ($this->session->login['role'] == 'teknisi') { ?>
 			<li class="nav-item <?= $aktif == 'dashboard' ? 'active' : '' ?>">
 				<a class="nav-link" href="<?= base_url('dashboard') ?>">
 					<i class="fas fa-fw fa-tachometer-alt"></i>
 					<span>Dashboard</span></a>
 			</li>
+			<?php } else { ?>
+			<li class="nav-item <?= $aktif == 'dashboard' ? 'active' : '' ?>">
+				<a class="nav-link" href="<?= base_url('dashboard/mahasiswa') ?>">
+					<i class="fas fa-fw fa-tachometer-alt"></i>
+					<span>Dashboard</span></a>
+			</li>
+			<?php } ?>
 
 			<?php if ($this->session->login['role'] == 'teknisi') { ?>
 

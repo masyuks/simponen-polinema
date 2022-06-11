@@ -188,32 +188,16 @@ class Peminjaman extends CI_Controller {
 		$this->load->view('peminjaman/keranjang');
 	}
 
-	public function export(){
-		$dompdf = new Dompdf();
+	public function export_rekap(){
 		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['all_peminjaman'] = $this->m_peminjaman->lihat();
-		$this->data['title'] = 'Laporan Data peminjaman';
+		$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full();
+		$this->data['title'] = 'Rekap Laporan Data peminjaman';
 		$this->data['no'] = 1;
 
-		$dompdf->setPaper('A4', 'Landscape');
-		$html = $this->load->view('peminjaman/report', $this->data, true);
-		$dompdf->load_html($html);
-		$dompdf->render();
-		$dompdf->stream('Laporan Data peminjaman Tanggal ' . date('d F Y'), array("Attachment" => false));
-	}
+		$this->load->library('pdf');
 
-	public function export_detail($no_peminjaman){
-		$dompdf = new Dompdf();
-		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['peminjaman'] = $this->m_peminjaman->lihat_no_peminjaman($no_peminjaman);
-		$this->data['all_detail_peminjaman'] = $this->m_detail_peminjaman->lihat_no_peminjaman($no_peminjaman);
-		$this->data['title'] = 'Laporan Detail peminjaman';
-		$this->data['no'] = 1;
-
-		$dompdf->setPaper('A4', 'Landscape');
-		$html = $this->load->view('peminjaman/detail_report', $this->data, true);
-		$dompdf->load_html($html);
-		$dompdf->render();
-		$dompdf->stream('Laporan Detail peminjaman Tanggal ' . date('d F Y'), array("Attachment" => false));
+	    $this->pdf->setPaper('A4', 'potrait');
+	    $this->pdf->filename = "laporan-petanikode.pdf";
+	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
 	}
 }
