@@ -50,7 +50,7 @@
 										<td>No</td>
 										<td>Kode Pengguna</td>
 										<td>Nama Pengguna</td>
-										<td>Username</td>
+										<td>Program Studi</td>
 										<td>Aksi</td>
 									</tr>
 								</thead>

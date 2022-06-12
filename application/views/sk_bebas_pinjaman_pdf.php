@@ -25,60 +25,48 @@
 			</center>
 		</span>
 		<br>
-		<span style="font-family: serif; color: black; font-size: 15px;">
-			<b>Periode :</b> <?php if (isset($periode)) { echo $periode; } else { echo 'Semua Transaksi Peminjaman'; } ?>
-		</span>
-		<br> 
-		<br>
-		<table style="font-family: serif; color: black; text-align: center;" border="1" width="97%">
-			<thead>
-				<tr>
-					<th>NIM</th>
-					<th>Nama Mahasiswa</th>
-					<th>Waktu Pinjam</th>
-					<th>Waktu Kembali</th>
-					<th>Kode Barang</th>
-					<th>Jumlah</th>
-					<th>Status</th>
-					<th>Keterangan</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($all_peminjaman as $peminjaman): ?>
+		<div class="row">
+			<div class="col-md-4">
+				<table style="color: black; text-align: left; font-family: serif;">
+					<?php foreach ($data_pengguna as $pengguna): ?>
 					<tr>
-						<td><?= $peminjaman->nim ?></td>
-						<td><?= $peminjaman->nama_pengguna ?></td>
-						<td><?= $peminjaman->waktu_pinjam ?></td>
-						<td><?= $peminjaman->waktu_kembali ?></td>
-						<td><?= $peminjaman->kode_barang ?></td>
-						<td><?= $peminjaman->jumlah ?></td>
-						<td><?php
-						if ($peminjaman->status == '1') {
-							echo "Diajukan";
-						} else if ($peminjaman->status == '2') {
-							echo "Diterima";
-						} else if ($peminjaman->status == '3') {
-							echo "Tanggungan";
-						} else if ($peminjaman->status == '4') {
-							echo "Selesai";
-						} else if ($peminjaman->status == '5') {
-							echo "Ditolak";
-						} 
-						?>
-					</td>
-					<td><?= $peminjaman->keterangan ?></td>
-				</tr>
-			<?php endforeach ?>
-		</tbody>
-	</table>
+						<td>Nama</td>
+						<td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+						<td><?= $pengguna->nama_pengguna ?></td>
+					</tr>
+					<tr>
+						<td>NIM</td>
+						<td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+						<td><?= $pengguna->kode_pengguna ?></td>
+					</tr>
+					<tr>
+						<td>Program Studi</td>
+						<td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+						<td><?= $pengguna->username_pengguna ?></td>
+					</tr>
+					<?php endforeach ?>
+				</table>
+			</div>
+		</div>
+		<br>
+		<span style="font-family: serif; color: black; font-size: 15px;">
+			Dengan ini menyatakan bahwa mahasiswa dengan data diri tersebut dinyatakan telah terbebas dari tanggungan peminjaman
+			alat dan komponen pada Laboratorium Gedung AI Politeknik Negeri Malang. 
+			<br>
+			Demikian Surat Pernyataan ini dibuat untuk dapat digunakan sebagaimana mestinya. 
+		</span>
 </div>
 <br><br>
 <span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
-	Penanggung Jawab
+	Mengetahui,
+</span>
+<br>
+<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+	Kepala Laboratorium,
 </span>
 <br><br><br><br>
 <span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
-	<?php echo $this->session->login['nama']; ?>
+	Lorem Ipsum, S.H., M.Hum,
 </span>
 <script src="<?= base_url('sb-admin') ?>/vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('sb-admin') ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

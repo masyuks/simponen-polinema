@@ -90,7 +90,7 @@
 											<input type="text" class="form-control" value="<?= $pengguna->nama_pengguna ?>" readonly>
 										</div>
 										<div class="form-group col-4">
-											<label>Username</label>
+											<label>Program Studi</label>
 											<input type="text" class="form-control" value="<?= $pengguna->username_pengguna ?>" readonly>
 										</div>
 									</div>

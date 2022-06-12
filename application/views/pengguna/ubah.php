@@ -42,7 +42,7 @@
 									</div>
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<label for="username_pengguna"><strong>Username</strong></label>
+											<label for="username_pengguna"><strong>Program Studi</strong></label>
 											<input type="text" name="username_pengguna" placeholder="Masukkan Username" autocomplete="off"  class="form-control" required value="<?= $pengguna->username_pengguna ?>">
 										</div>
 										<div class="form-group col-md-6">
