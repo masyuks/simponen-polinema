@@ -56,6 +56,15 @@ class M_peminjaman extends CI_Model {
 		return $this->db->get($this->_table)->result();
 	} 
 
+	public function lihat_join_mahasiswa(){
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
+		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
+		$this->db->where('id_pengguna', $this->session->login['id']);
+		return $this->db->get($this->_table)->result();
+	} 
+
 	public function lihat_join_today_mahasiswa(){
 		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');

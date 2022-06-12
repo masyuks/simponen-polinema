@@ -171,7 +171,7 @@
 								<?php } ?>
 								<?php if ($jumlah_diterima > 0) { ?>
 									<div class="alert alert-success alert-dismissible fade show" role="alert">
-										<strong><?= $jumlah_pengajuan ?> pengajuan</strong> peminjaman anda telah diterima
+										<strong><?= $jumlah_diterima ?> pengajuan</strong> peminjaman anda telah diterima
 									</div>
 								<?php } ?>
 							</div>				

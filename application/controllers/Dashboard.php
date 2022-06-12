@@ -24,7 +24,7 @@ class Dashboard extends CI_Controller {
 
 	public function mahasiswa(){
 		$this->data['title'] = 'Halaman Dashboard';
-		$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join();
+		$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_mahasiswa();
 		$this->data['jumlah_peminjaman'] = $this->m_peminjaman->jumlah_mahasiswa();
 		$this->data['jumlah_tanggungan'] = $this->m_peminjaman->jumlah_tanggungan_mahasiswa();
 		$this->data['jumlah_pengajuan'] = $this->m_peminjaman->jumlah_pengajuan_mahasiswa();
