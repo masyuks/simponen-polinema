@@ -59,6 +59,7 @@ class Login extends CI_Controller{
 					'id' => $get_pengguna->id,
 					'kode' => $get_pengguna->kode_pengguna,
 					'nama' => $get_pengguna->nama_pengguna,
+					'email' => $get_pengguna->email_pengguna,
 					'username' => $get_pengguna->username_pengguna,
 					'role' => $this->input->post('role'),
 					'jam_masuk' => date('H:i:s')

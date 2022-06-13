@@ -150,12 +150,63 @@ class Peminjaman extends CI_Controller {
 			endforeach;
 		}
 
-		$data = [
-			'status' => $status,
-		];
+		if ($status == 2) {
+			$data = [
+				'id_teknisi' => $this->session->login['id'],
+				'status' => $status,
+			];
+		} else {
+			$data = [
+				'status' => $status,
+			];
+		}
 
 		if($this->m_peminjaman->ubah($data, $id)){
 			$this->session->set_flashdata('success', 'Status peminjaman <strong>Berhasil</strong> Diperbarui!');
+			if ($status == 2) {
+				$peminjaman = $this->m_peminjaman->lihat_id_join($id);
+				$this->load->library('email');
+				$config = array();
+				$config['charset']='utf-8';
+				$config['useragent']='Codeigniter';
+				$config['protocol']="smtp";
+				$config['mailtype']="html";
+				$config['smtp_host']="ssl://smtp.gmail.com";
+				$config['smtp_port']="465";
+				$config['smtp_timeout']="400";
+				$config['smtp_user']="1841160077@student.polinema.ac.id";
+				$config['smtp_pass']="cindpuspita";
+				$config['crlf']="\r\n";
+				$config['newline']="\r\n";
+				$config['wordwrap']=TRUE;
+
+				//memanggil library email dan set konfigurasi untuk pengiriman email	
+				$this->email->initialize($config);
+				// Email dan nama pengirim
+				$this->email->from('no-reply@polinema.ac.id', 'Lab AI Polinema');
+				// Email penerima
+				$this->email->to($peminjaman->email_pengguna); // Ganti dengan email tujuan
+				// Subject email
+				$this->email->subject('Notifikasi Penerimaan Pengajuan Peminjaman Alat & Komponen');
+				// Isi email
+				$this->email->message("<h3 style='color: black;'> Penerimaan Pengajuan Peminjaman Alat & Komponen</h3> 
+					<span style='color: black;'>
+					Notifikasi penerimaan pengajuan peminjaman alat & komponen bahwa pengajuan pinjaman <b>telah disetujui</b> dengan data sebagai berikut : <br><br>
+					<b> Nama </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+					$peminjaman->nama_pengguna <br>
+					<b> Dosen </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+					$peminjaman->nama_dosen<br>
+					<b> Mata Kuliah </b> &nbsp;&nbsp;&nbsp;&nbsp; : 
+					$peminjaman->nama_mk <br>
+					<b> Waktu Pinjam </b> &nbsp; : 
+					$peminjaman->waktu_pinjam <br>
+					<b> Waktu Kembali </b> : 
+					$peminjaman->waktu_kembali <br><br>
+					Silahkan melakukan peminjaman alat atau komponen ke Laboratorium Gedung AI Polinema untuk mengambil alat atau komponen yang akan dipinjam. <br> Terima Kasih. </span>");
+				if ($this->email->send()) {
+					$this->session->set_flashdata('success', 'Status peminjaman <strong>Berhasil</strong> Diperbarui. Pemberitahuan email telah dikirimkan');
+				} 
+			}
 			redirect('peminjaman');
 		} else {
 			$this->session->set_flashdata('error', 'Status peminjaman <strong>Gagal</strong> Diperbarui!');

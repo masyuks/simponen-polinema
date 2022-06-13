@@ -199,9 +199,10 @@ class M_peminjaman extends CI_Model {
 	}
 
 	public function lihat_id_join($id){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, pengguna.email_pengguna, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','dosen.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		return $this->db->get_where($this->_table, ['peminjaman.id' => $id])->row();
 	} 
