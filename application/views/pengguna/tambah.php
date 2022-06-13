@@ -46,6 +46,12 @@
 											<input type="text" name="username_pengguna" placeholder="Masukkan Username" autocomplete="off"  class="form-control" required>
 										</div>
 										<div class="form-group col-md-6">
+											<label for="email_pengguna"><strong>Email</strong></label>
+											<input type="email" name="email_pengguna" placeholder="Masukkan Email" autocomplete="off"  class="form-control" required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
 											<label for="password_pengguna"><strong>Password</strong></label>
 											<input type="password" name="password_pengguna" placeholder="Masukkan Password" autocomplete="off"  class="form-control" required>
 										</div>

@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title><?= $title ?></title>
 	<link href="<?= base_url('sb-admin') ?>/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="<?=base_url()?>assets/img/polinema-loss.png">
 </head>
 <body>
 	<div class="row">

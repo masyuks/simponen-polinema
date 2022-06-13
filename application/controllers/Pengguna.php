@@ -45,6 +45,7 @@ class Pengguna extends CI_Controller {
 			'nama_pengguna' => $this->input->post('nama_pengguna'),
 			'username_pengguna' => $this->input->post('username_pengguna'),
 			'password_pengguna' => md5($this->input->post('password_pengguna')),
+			'email_pengguna' => $this->input->post('email_pengguna'),
 		];
 
 		if($this->m_pengguna->tambah($data)){
@@ -82,12 +83,14 @@ class Pengguna extends CI_Controller {
 				'nama_pengguna' => $this->input->post('nama_pengguna'),
 				'username_pengguna' => $this->input->post('username_pengguna'),
 				'password_pengguna' => md5($this->input->post('password_pengguna')),
+				'email_pengguna' => $this->input->post('email_pengguna'),
 			];
 		} else {
 			$data = [
 				'kode_pengguna' => $this->input->post('kode_pengguna'),
 				'nama_pengguna' => $this->input->post('nama_pengguna'),
 				'username_pengguna' => $this->input->post('username_pengguna'),
+				'email_pengguna' => $this->input->post('email_pengguna'),
 			];
 		}
 
@@ -113,19 +116,5 @@ class Pengguna extends CI_Controller {
 			$this->session->set_flashdata('error', 'Data Pengguna <strong>Gagal</strong> Dihapus!');
 			redirect('pengguna');
 		}
-	}
-
-	public function export(){
-		$dompdf = new Dompdf();
-		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['all_pengguna'] = $this->m_pengguna->lihat();
-		$this->data['title'] = 'Laporan Data Pengguna';
-		$this->data['no'] = 1;
-
-		$dompdf->setPaper('A4', 'Landscape');
-		$html = $this->load->view('pengguna/report', $this->data, true);
-		$dompdf->load_html($html);
-		$dompdf->render();
-		$dompdf->stream('Laporan Data Pengguna Tanggal ' . date('d F Y'), array("Attachment" => false));
 	}
 }

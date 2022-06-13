@@ -46,7 +46,7 @@
 			</li>
 			<?php } else { ?>
 			<li class="nav-item <?= $aktif == 'dashboard' ? 'active' : '' ?>">
-				<a class="nav-link" href="<?= base_url('dashboard/mahasiswa') ?>">
+				<a class="nav-link" href="<?= base_url('dashboard') ?>">
 					<i class="fas fa-fw fa-tachometer-alt"></i>
 					<span>Dashboard</span></a>
 			</li>

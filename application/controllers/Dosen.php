@@ -102,18 +102,4 @@ class Dosen extends CI_Controller{
 			redirect('dosen');
 		}
 	}
-
-	public function export(){
-		$dompdf = new Dompdf();
-		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['all_dosen'] = $this->m_dosen->lihat();
-		$this->data['title'] = 'Laporan Data dosen';
-		$this->data['no'] = 1;
-
-		$dompdf->setPaper('A4', 'Landscape');
-		$html = $this->load->view('dosen/report', $this->data, true);
-		$dompdf->load_html($html);
-		$dompdf->render();
-		$dompdf->stream('Laporan Data dosen Tanggal ' . date('d F Y'), array("Attachment" => false));
-	}
 }

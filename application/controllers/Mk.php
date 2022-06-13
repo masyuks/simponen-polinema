@@ -95,18 +95,4 @@ class mk extends CI_Controller{
 			redirect('mk');
 		}
 	}
-
-	public function export(){
-		$dompdf = new Dompdf();
-		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['all_mk'] = $this->m_mk->lihat();
-		$this->data['title'] = 'Laporan Data Mata Kuliah';
-		$this->data['no'] = 1;
-
-		$dompdf->setPaper('A4', 'Landscape');
-		$html = $this->load->view('mk/report', $this->data, true);
-		$dompdf->load_html($html);
-		$dompdf->render();
-		$dompdf->stream('Laporan Data Mata Kuliah Tanggal ' . date('d F Y'), array("Attachment" => false));
-	}
 }

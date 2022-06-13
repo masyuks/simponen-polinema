@@ -108,18 +108,4 @@ class Teknisi extends CI_Controller{
 			redirect('teknisi');
 		}
 	}
-
-	public function export(){
-		$dompdf = new Dompdf();
-		// $this->data['perusahaan'] = $this->m_usaha->lihat();
-		$this->data['all_teknisi'] = $this->m_teknisi->lihat();
-		$this->data['title'] = 'Laporan Data teknisi';
-		$this->data['no'] = 1;
-
-		$dompdf->setPaper('A4', 'Landscape');
-		$html = $this->load->view('teknisi/report', $this->data, true);
-		$dompdf->load_html($html);
-		$dompdf->render();
-		$dompdf->stream('Laporan Data teknisi Tanggal ' . date('d F Y'), array("Attachment" => false));
-	}
 }
