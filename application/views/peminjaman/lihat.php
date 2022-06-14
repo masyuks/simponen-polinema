@@ -113,15 +113,22 @@
 												<td><?= $peminjaman->waktu_kembali ?></td>
 												<td><?php
 												if ($peminjaman->status == '1') {
-													echo "Diajukan";
+													echo "<span class='badge badge-pill badge-info'>Diajukan</span>";
 												} else if ($peminjaman->status == '2') {
-													echo "Diterima";
+													date_default_timezone_set("Asia/Bangkok");
+													$time = strtotime($peminjaman->waktu_kembali);
+													$now = strtotime(date('Y-m-d H:i:s'));
+													if ($now >= $time) {
+														echo "<span class='badge badge-pill badge-danger'>Overtime</span>";
+													} else {
+														echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
+													}
 												} else if ($peminjaman->status == '3') {
-													echo "Tanggungan";
+													echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
 												} else if ($peminjaman->status == '4') {
-													echo "Selesai";
+													echo "<span class='badge badge-pill badge-success'>Selesai</span>";
 												} else if ($peminjaman->status == '5') {
-													echo "Ditolak";
+													echo "<span class='badge badge-pill badge-dark'>Ditolak</span>";
 												} 
 												?>
 											</td>

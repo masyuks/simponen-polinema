@@ -39,13 +39,97 @@
 											</button>
 										</div>
 										<div class="modal-body">
-											<div class="form-group">
-												<label for="message-text" class="col-form-label">Tanggal Awal</label>
-												<input type="date" name="tanggal_awal" value="" placeholder="Mulai" class="form-control" required>
+											<div class="row">
+												<div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Tanggal Awal</label>
+														<input type="date" name="tanggal_awal" value="" placeholder="Mulai" class="form-control">
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Tanggal Akhir</label>
+														<input type="date" name="tanggal_akhir" value="" placeholder="Akhir" class="form-control">
+													</div>
+												</div>
 											</div>
-											<div class="form-group">
-												<label for="message-text" class="col-form-label">Tanggal Akhir</label>
-												<input type="date" name="tanggal_akhir" value="" placeholder="Akhir" class="form-control" required>
+											<div class="row">
+												<div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Kelas</label>
+														<select name="kelas" id="kelas" class="form-control">
+															<option selected disabled>Pilih Kelas</option>
+															<?php foreach ($all_kelas as $kelas): ?>
+																<option value="<?= $kelas->kelas ?>"><?= $kelas->kelas?></option>
+															<?php endforeach ?>
+														</select>
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Semester</label>
+														<select name="semester" id="semester" class="form-control">
+															<option selected disabled>Pilih Semester</option>
+															<?php 
+															for ($i=1; $i <= 8; $i++) { 
+																?>
+																<option value="<?= $i ?>">Semester <?= $i ?></option>
+																<?php
+															}
+															?>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Dosen</label>
+														<select name="id_dosen" id="id_dosen" class="form-control">
+															<option selected disabled>Pilih Dosen</option>
+															<?php foreach ($all_dosen as $dosen): ?>
+																<option value="<?= $dosen->id ?>"><?= $dosen->nama_dosen ?></option>
+															<?php endforeach ?>
+														</select>
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Mata Kuliah</label>
+														<select name="id_mk" id="id_mk" class="form-control">
+															<option selected disabled>Pilih Mata Kuliah</option>
+															<?php foreach ($all_mk as $mk): ?>
+																<option value="<?= $mk->id ?>"><?= $mk->nama_mk ?></option>
+															<?php endforeach ?>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-12">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Mahasiswa</label>
+														<select name="id_pengguna" id="id_pengguna" class="form-control">
+															<option selected disabled>Pilih Mahasiswa</option>
+															<?php foreach ($all_pengguna as $pengguna): ?>
+																<option value="<?= $pengguna->id ?>"><?= $pengguna->kode_pengguna.' - '.$pengguna->nama_pengguna ?></option>
+															<?php endforeach ?>
+														</select>
+													</div>
+												</div>
+												<!-- <div class="col-6">
+													<div class="form-group">
+														<label for="message-text" class="col-form-label">Semester</label>
+														<select name="status" id="status" class="form-control">
+															<option selected disabled>Pilih Status</option>
+															<option value="1">Diajukan</option>
+															<option value="2">Diterima</option>
+															<option value="3">Tanggungan</option>
+															<option value="4">Selesai</option>
+															<option value="5">Ditolak</option>
+														</select>
+													</div>
+												</div> -->
 											</div>
 										</div>
 										<div class="modal-footer">
@@ -129,6 +213,10 @@
 										<tr>
 											<td>NIM</td>
 											<td>Nama Mahasiswa</td>
+											<td>Program Studi</td>
+											<td>Kelas</td>
+											<td>Semester</td>
+											<td>Mata Kuliah</td>
 											<td>Dosen</td>
 											<td>Waktu Pinjam</td>
 											<td>Waktu Kembali</td>
@@ -144,6 +232,10 @@
 											<tr>
 												<td><?= $peminjaman->nim ?></td>
 												<td><?= $peminjaman->nama_pengguna ?></td>
+												<td><?= $peminjaman->username_pengguna ?></td>
+												<td><?= $peminjaman->kelas ?></td>
+												<td><?= $peminjaman->semester ?></td>
+												<td><?= $peminjaman->nama_mk ?></td>
 												<td><?= $peminjaman->nama_dosen ?></td>
 												<td><?= $peminjaman->waktu_pinjam ?></td>
 												<td><?= $peminjaman->waktu_kembali ?></td>
@@ -152,15 +244,27 @@
 												<td><?= $peminjaman->jumlah ?></td>
 												<td><?php
 												if ($peminjaman->status == '1') {
-													echo "Diajukan";
+													echo "<span class='badge badge-pill badge-info'>Diajukan</span>";
 												} else if ($peminjaman->status == '2') {
-													echo "Diterima";
+													date_default_timezone_set("Asia/Bangkok");
+													$time = strtotime($peminjaman->waktu_kembali);
+													$now = strtotime(date('Y-m-d H:i:s'));
+													if ($now >= $time) {
+														echo "<span class='badge badge-pill badge-danger'>Overtime</span>";
+													} else {
+														echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
+													}
 												} else if ($peminjaman->status == '3') {
-													echo "Tanggungan";
+													if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) {
+														echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
+													}
+													else {
+														echo "<span class='badge badge-pill badge-success'>Selesai</span>";
+													}
 												} else if ($peminjaman->status == '4') {
-													echo "Selesai";
+													echo "<span class='badge badge-pill badge-success'>Selesai</span>";
 												} else if ($peminjaman->status == '5') {
-													echo "Ditolak";
+													echo "<span class='badge badge-pill badge-dark'>Ditolak</span>";
 												} 
 												?>
 											</td>

@@ -57,6 +57,21 @@
 											<td><?= $peminjaman->nama_pengguna ?></td>
 										</tr>
 										<tr>
+											<td><strong>Kelas</strong></td>
+											<td>:</td>
+											<td><?= $peminjaman->kelas ?> - <?= $peminjaman->username_pengguna ?></td>
+										</tr>
+										<tr>
+											<td><strong>Dosen</strong></td>
+											<td>:</td>
+											<td><?= $peminjaman->nama_dosen ?></td>
+										</tr>
+										<tr>
+											<td><strong>Mata Kuliah</strong></td>
+											<td>:</td>
+											<td><?= $peminjaman->nama_mk ?></td>
+										</tr>
+										<tr>
 											<td><strong>Waktu Peminjaman</strong></td>
 											<td>:</td>
 											<td><?= $peminjaman->waktu_pinjam ?></td>
@@ -72,29 +87,26 @@
 											<td>
 												<?php
 												if ($peminjaman->status == '1') {
-													echo "Diajukan";
+													echo "<span class='badge badge-pill badge-info'>Diajukan</span>";
 												} else if ($peminjaman->status == '2') {
-													echo "Diterima";
+													date_default_timezone_set("Asia/Bangkok");
+													$time = strtotime($peminjaman->waktu_kembali);
+													$now = strtotime(date('Y-m-d H:i:s'));
+													if ($now >= $time) {
+														echo "<span class='badge badge-pill badge-danger'>Overtime</span>";
+													} else {
+														echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
+													}
 												} else if ($peminjaman->status == '3') {
-													echo "Tanggungan";
+													echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
 												} else if ($peminjaman->status == '4') {
-													echo "Selesai";
+													echo "<span class='badge badge-pill badge-success'>Selesai</span>";
 												} else if ($peminjaman->status == '5') {
-													echo "Ditolak";
+													echo "<span class='badge badge-pill badge-dark'>Ditolak</span>";
 												} 
 												?>
-
 											</td>
 										</tr>
-										<?php if ($peminjaman->status == '3') { ?>
-											<tr>
-												<td><strong>Keterangan</strong></td>
-												<td>:</td>
-												<td>
-													<?= $peminjaman->keterangan ?>
-												</td>
-											</tr>
-										<?php } ?>
 									</table>
 								</div>
 							</div>
@@ -105,21 +117,35 @@
 										<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 											<thead>
 												<tr>
+													<?php if ($peminjaman->status == '3') { ?>
+														<td><strong>Check</strong></td>
+													<?php } ?>
 													<td><strong>No</strong></td>
 													<td><strong>Nama Barang</strong></td>
 													<td><strong>Kode Barang</strong></td>
 													<td><strong>Jenis</strong></td>
 													<td><strong>Jumlah</strong></td>
+													<td><strong>Keterangan</strong></td>
 												</tr>
 											</thead>
 											<tbody>
 												<?php foreach ($all_detail_peminjaman as $detail_peminjaman): ?>
 													<tr>
+														<?php if ($peminjaman->status == '3') { ?>
+															<td class="text-center">
+																<?php if ($peminjaman->status == '3' AND $detail_peminjaman->keterangan != NULL) { ?>
+																	<i class="fa fa-times badge badge-pill badge-danger">
+																<?php } else { ?>
+																	<i class="fa fa-check badge badge-pill badge-success">
+																<?php } ?>
+															</td>
+														<?php } ?>
 														<td><?= $no++ ?></td>
 														<td><?= $detail_peminjaman->nama_barang ?></td>
 														<td><?= $detail_peminjaman->kode_barang ?></td>
 														<td><?= $detail_peminjaman->jenis ?></td>
 														<td><?= $detail_peminjaman->jumlah ?></td>
+														<td><?= $detail_peminjaman->keterangan ?></td>
 													</tr>
 												<?php endforeach ?>
 											</tbody>
@@ -151,9 +177,36 @@
 															</div>
 															<div class="modal-body">
 																<div class="form-group">
-																	<label for="message-text" class="col-form-label">Keterangan Tanggungan:</label>
-																	<textarea class="form-control" id="message-text" name="keterangan"></textarea>
+																	<label for="message-text" class="col-form-label">Pilih Barang Tanggungan (Rusak, Hilang Dsb.):</label>	
+																	<br>
+																	<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+																		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+																			<thead>
+																				<tr>
+																					<td><strong>Set</strong></td>
+																					<td><strong>Barang</strong></td>
+																					<td><strong>Keterangan</strong></td>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<?php foreach ($all_detail_peminjaman as $detail_peminjaman): ?>
+																					<tr>
+																						<td>
+																							<input type="checkbox" class="form-control" name="id_barang[<?= $detail_peminjaman->id ?>]" alt="Checkbox" value="<?= $detail_peminjaman->id ?>" style="width: 100%;">
+																						</td>
+																						<td>
+																							<?= $detail_peminjaman->kode_barang ?> - <?= $detail_peminjaman->nama_barang ?>
+																						</td>
+																						<td>
+																							<textarea class="form-control" id="message-text" name="keterangan[<?= $detail_peminjaman->id ?>]" placeholder="Keterangan"></textarea>
+																						</td>
+																					</tr>
+																				<?php endforeach ?>
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
+																<span style="color: red; font-size: 12px;">*Tulis keterangan secara lengkap apabila barang tanggungan lebih dari 1 barang</span>
 															</div>
 															<input type="hidden" name="status" value="3">
 															<input type="hidden" name="id" value="<?php echo $peminjaman->id; ?>">

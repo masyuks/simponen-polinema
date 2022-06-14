@@ -45,16 +45,6 @@
 											<label for="username_dosen"><strong>Jabatan</strong></label>
 											<input type="text" name="jabatan" placeholder="Masukkan Jabatan" autocomplete="off"  class="form-control" value="<?= $dosen->jabatan ?>" required>
 										</div>
-										<div class="form-group col-md-6">
-											<label for="password_dosen"><strong>Mata Kuliah</strong></label>
-											<select name="id_mk" id="id_mk" class="form-control">
-												<option value="<?= $dosen->id_mk ?>" selected><?= $dosen->nama_mk ?></option>
-												<option disabled>-----------------------------</option>
-												<?php foreach ($all_mk as $mk): ?>
-													<option value="<?= $mk->id ?>"><?= $mk->nama_mk ?></option>
-												<?php endforeach ?>
-											</select>
-										</div>
 									</div>
 									<hr>
 									<div class="form-group">

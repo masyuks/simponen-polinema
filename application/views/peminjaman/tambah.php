@@ -32,13 +32,30 @@
 								<form action="<?= base_url('peminjaman/proses_tambah') ?>" id="form-tambah" method="POST">
 									<h5>Data Peminjaman</h5>
 									<hr>
+									<?php 
+									if ($this->session->login['role'] == 'teknisi') {
+									?>
 									<div class="form-row">
-										<div class="form-group col-2">
+										<div class="form-group col-12">
+											<label for="nama_dosen">NIM Mahasiswa</label>
+											<select name="id_pengguna" id="id_pengguna" class="form-control" required>
+												<option selected disabled>Pilih Mahasiswa</option>
+												<?php foreach ($all_pengguna as $pengguna): ?>
+													<option value="<?= $pengguna->id ?>"><?= $pengguna->kode_pengguna.' - '.$pengguna->nama_pengguna ?></option>
+												<?php endforeach ?>
+											</select>
+										</div>
+									</div>
+									<?php
+									}
+									 ?>
+									<div class="form-row">
+										<div class="form-group col-4">
 											<label for="nama_dosen">Nama Dosen</label>
 											<select name="id_dosen" id="id_dosen" class="form-control" required>
 												<option selected disabled>Pilih Dosen</option>
 												<?php foreach ($all_dosen as $dosen): ?>
-													<option value="<?= $dosen->id ?>"><?= $dosen->nama_dosen.' - '.$dosen->nama_mk ?></option>
+													<option value="<?= $dosen->id ?>"><?= $dosen->nama_dosen ?></option>
 												<?php endforeach ?>
 											</select>
 										</div>
@@ -58,33 +75,45 @@
 											<label>Jam Kembali</label>
 											<input type="time" name="jam_kembali" class="form-control" required>
 										</div>
-										<div class="form-group col-2">
-											<label>Waktu Pengajuan</label>
-											<input type="text" name="waktu_diajukan" value="<?= date('Y-m-d H:i:s') ?>" readonly class="form-control">
-										</div>
 									</div>
-									<?php 
-									if ($this->session->login['role'] == 'teknisi') {
-									?>
 									<div class="form-row">
-										<div class="form-group col-12">
-											<label for="nama_dosen">NIM Mahasiswa</label>
-											<select name="id_pengguna" id="id_pengguna" class="form-control" required>
-												<option selected disabled>Pilih Mahasiswa</option>
-												<?php foreach ($all_pengguna as $pengguna): ?>
-													<option value="<?= $pengguna->id ?>"><?= $pengguna->kode_pengguna.' - '.$pengguna->nama_pengguna ?></option>
+										<div class="form-group col-3">
+											<label for="nama_dosen">Mata Kuliah</label>
+											<select name="id_mk" id="id_mk" class="form-control" required>
+												<option selected disabled>Pilih Mata Kuliah</option>
+												<?php foreach ($all_mk as $mk): ?>
+													<option value="<?= $mk->id ?>"><?= $mk->nama_mk ?></option>
 												<?php endforeach ?>
 											</select>
 										</div>
+										<div class="form-group col-3">
+											<label>Kelas</label>
+											<input type="text" name="kelas" value="" class="form-control" required>
+											<span style="color: red; font-size: 10px;">* Contoh 1D atau 4A</span>
+										</div>
+										<div class="form-group col-3">
+											<label>Semester</label>
+											<select name="semester" id="semester" class="form-control" required>
+												<option selected disabled>Pilih Semester</option>
+												<?php 
+													for ($i=1; $i <= 8; $i++) { 
+												?>
+												<option value="<?= $i ?>">Semester <?= $i ?></option>
+												<?php
+													}
+												 ?>
+											</select>
+										</div>
+										<div class="form-group col-3">
+											<label>Timestamp</label>
+											<input type="text" name="waktu_diajukan" value="<?= date('Y-m-d H:i:s') ?>" readonly class="form-control">
+										</div>
 									</div>
-									<?php
-									}
-									 ?>
 									<h5>Data Barang</h5>
 									<hr>
 									<div class="form-row">
 										<div class="form-group col-3">
-											<label for="nama_barang">Nama Barang</label>
+											<label for="nama_barang">Nama</label>
 											<select name="nama_barang" id="nama_barang" class="form-control">
 												<option value="">Pilih Barang</option>
 												<?php foreach ($all_barang as $barang): ?>
@@ -94,7 +123,7 @@
 										</div>
 										<input type="hidden" name="id" value="" readonly>
 										<div class="form-group col-2">
-											<label>Kode Barang</label>
+											<label>Kode</label>
 											<input type="text" name="kode_barang" value="" readonly class="form-control">
 										</div>
 										<div class="form-group col-2">

@@ -13,7 +13,7 @@ class Dosen extends CI_Controller{
 
 	public function index(){
 		$this->data['title'] = 'Data Dosen';
-		$this->data['all_dosen'] = $this->m_dosen->lihat_join_mk();
+		$this->data['all_dosen'] = $this->m_dosen->lihat();
 		$this->data['no'] = 1;
 
 		$this->load->view('dosen/lihat', $this->data);
@@ -41,7 +41,6 @@ class Dosen extends CI_Controller{
 			'kode_dosen' => $this->input->post('kode_dosen'),
 			'nama_dosen' => $this->input->post('nama_dosen'),
 			'jabatan' => $this->input->post('jabatan'),
-			'id_mk' =>  $this->input->post('id_mk'),
 		];
 
 		if($this->m_dosen->tambah($data)){
@@ -60,8 +59,7 @@ class Dosen extends CI_Controller{
 		}
 
 		$this->data['title'] = 'Ubah Dosen';
-		$this->data['dosen'] = $this->m_dosen->lihat_id_join_mk($id);
-		$this->data['all_mk'] = $this->m_mk->lihat();
+		$this->data['dosen'] = $this->m_dosen->lihat_id($id);
 
 		$this->load->view('dosen/ubah', $this->data);
 	}
@@ -76,7 +74,6 @@ class Dosen extends CI_Controller{
 			'kode_dosen' => $this->input->post('kode_dosen'),
 			'nama_dosen' => $this->input->post('nama_dosen'),
 			'jabatan' => $this->input->post('jabatan'),
-			'id_mk' =>  $this->input->post('id_mk'),
 		];
 
 		if($this->m_dosen->ubah($data, $id)){

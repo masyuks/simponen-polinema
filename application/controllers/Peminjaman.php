@@ -9,6 +9,7 @@ class Peminjaman extends CI_Controller {
 		date_default_timezone_set('Asia/Jakarta');
 		$this->load->model('M_barang', 'm_barang');
 		$this->load->model('M_dosen', 'm_dosen');
+		$this->load->model('M_mk', 'm_mk');
 		$this->load->model('M_pengguna', 'm_pengguna');
 		$this->load->model('M_peminjaman', 'm_peminjaman');
 		$this->load->model('M_detail_peminjaman', 'm_detail_peminjaman');
@@ -38,6 +39,10 @@ class Peminjaman extends CI_Controller {
 	public function rekap(){
 		$this->data['aktif'] = 'rekap';
 		$this->data['title'] = 'Rekap peminjaman Barang';
+		$this->data['all_dosen'] = $this->m_dosen->lihat();
+		$this->data['all_mk'] = $this->m_mk->lihat();
+		$this->data['all_pengguna'] = $this->m_pengguna->lihat();
+		$this->data['all_kelas'] = $this->m_peminjaman->kelas();
 		if ($this->session->login['role'] == 'teknisi') {
 			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full();
 		} else {
@@ -60,7 +65,8 @@ class Peminjaman extends CI_Controller {
 	public function tambah(){
 		$this->data['title'] = 'Tambah peminjaman';
 		$this->data['all_barang'] = $this->m_barang->lihat_stok();
-		$this->data['all_dosen'] = $this->m_dosen->lihat_join_mk();
+		$this->data['all_dosen'] = $this->m_dosen->lihat();
+		$this->data['all_mk'] = $this->m_mk->lihat();
 		$this->data['all_pengguna'] = $this->m_pengguna->lihat();
 
 		$this->load->view('peminjaman/tambah', $this->data);
@@ -76,6 +82,9 @@ class Peminjaman extends CI_Controller {
 			'id_dosen' => $this->input->post('id_dosen'),
 			'waktu_diajukan' => $this->input->post('waktu_diajukan'),
 			'status' => '1',
+			'id_mk' => $this->input->post('id_mk'),
+			'kelas' => $this->input->post('kelas'),
+			'semester' => $this->input->post('semester'),
 			'id_pengguna' => $this->session->login['id'],
 		];
 	} else {
@@ -85,6 +94,9 @@ class Peminjaman extends CI_Controller {
 			'id_dosen' => $this->input->post('id_dosen'),
 			'waktu_diajukan' => $this->input->post('waktu_diajukan'),
 			'status' => '1',
+			'id_mk' => $this->input->post('id_mk'),
+			'kelas' => $this->input->post('kelas'),
+			'semester' => $this->input->post('semester'),
 			'id_pengguna' => $this->input->post('id_pengguna'),
 		];
 	}
@@ -163,50 +175,50 @@ class Peminjaman extends CI_Controller {
 
 		if($this->m_peminjaman->ubah($data, $id)){
 			$this->session->set_flashdata('success', 'Status peminjaman <strong>Berhasil</strong> Diperbarui!');
-			if ($status == 2) {
-				$peminjaman = $this->m_peminjaman->lihat_id_join($id);
-				$this->load->library('email');
-				$config = array();
-				$config['charset']='utf-8';
-				$config['useragent']='Codeigniter';
-				$config['protocol']="smtp";
-				$config['mailtype']="html";
-				$config['smtp_host']="ssl://smtp.gmail.com";
-				$config['smtp_port']="465";
-				$config['smtp_timeout']="400";
-				$config['smtp_user']="1841160077@student.polinema.ac.id";
-				$config['smtp_pass']="cindpuspita";
-				$config['crlf']="\r\n";
-				$config['newline']="\r\n";
-				$config['wordwrap']=TRUE;
+			// if ($status == 2) {
+			// 	$peminjaman = $this->m_peminjaman->lihat_id_join($id);
+			// 	$this->load->library('email');
+			// 	$config = array();
+			// 	$config['charset']='utf-8';
+			// 	$config['useragent']='Codeigniter';
+			// 	$config['protocol']="smtp";
+			// 	$config['mailtype']="html";
+			// 	$config['smtp_host']="ssl://smtp.gmail.com";
+			// 	$config['smtp_port']="465";
+			// 	$config['smtp_timeout']="400";
+			// 	$config['smtp_user']="1841160077@student.polinema.ac.id";
+			// 	$config['smtp_pass']="cindpuspita";
+			// 	$config['crlf']="\r\n";
+			// 	$config['newline']="\r\n";
+			// 	$config['wordwrap']=TRUE;
 
-				//memanggil library email dan set konfigurasi untuk pengiriman email	
-				$this->email->initialize($config);
-				// Email dan nama pengirim
-				$this->email->from('no-reply@polinema.ac.id', 'Lab AI Polinema');
-				// Email penerima
-				$this->email->to($peminjaman->email_pengguna); // Ganti dengan email tujuan
-				// Subject email
-				$this->email->subject('Notifikasi Penerimaan Pengajuan Peminjaman Alat & Komponen');
-				// Isi email
-				$this->email->message("<h3 style='color: black;'> Penerimaan Pengajuan Peminjaman Alat & Komponen</h3> 
-					<span style='color: black;'>
-					Notifikasi penerimaan pengajuan peminjaman alat & komponen bahwa pengajuan pinjaman <b>telah disetujui</b> dengan data sebagai berikut : <br><br>
-					<b> Nama </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
-					$peminjaman->nama_pengguna <br>
-					<b> Dosen </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
-					$peminjaman->nama_dosen<br>
-					<b> Mata Kuliah </b> &nbsp;&nbsp;&nbsp;&nbsp; : 
-					$peminjaman->nama_mk <br>
-					<b> Waktu Pinjam </b> &nbsp; : 
-					$peminjaman->waktu_pinjam <br>
-					<b> Waktu Kembali </b> : 
-					$peminjaman->waktu_kembali <br><br>
-					Silahkan melakukan peminjaman alat atau komponen ke Laboratorium Gedung AI Polinema untuk mengambil alat atau komponen yang akan dipinjam. <br> Terima Kasih. </span>");
-				if ($this->email->send()) {
-					$this->session->set_flashdata('success', 'Status peminjaman <strong>Berhasil</strong> Diperbarui. Pemberitahuan email telah dikirimkan');
-				} 
-			}
+			// 	//memanggil library email dan set konfigurasi untuk pengiriman email	
+			// 	$this->email->initialize($config);
+			// 	// Email dan nama pengirim
+			// 	$this->email->from('no-reply@polinema.ac.id', 'Lab AI Polinema');
+			// 	// Email penerima
+			// 	$this->email->to($peminjaman->email_pengguna); // Ganti dengan email tujuan
+			// 	// Subject email
+			// 	$this->email->subject('Notifikasi Penerimaan Pengajuan Peminjaman Alat & Komponen');
+			// 	// Isi email
+			// 	$this->email->message("<h3 style='color: black;'> Penerimaan Pengajuan Peminjaman Alat & Komponen</h3> 
+			// 		<span style='color: black;'>
+			// 		Notifikasi penerimaan pengajuan peminjaman alat & komponen bahwa pengajuan pinjaman <b>telah disetujui</b> dengan data sebagai berikut : <br><br>
+			// 		<b> Nama </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+			// 		$peminjaman->nama_pengguna <br>
+			// 		<b> Dosen </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+			// 		$peminjaman->nama_dosen<br>
+			// 		<b> Mata Kuliah </b> &nbsp;&nbsp;&nbsp;&nbsp; : 
+			// 		$peminjaman->nama_mk <br>
+			// 		<b> Waktu Pinjam </b> &nbsp; : 
+			// 		$peminjaman->waktu_pinjam <br>
+			// 		<b> Waktu Kembali </b> : 
+			// 		$peminjaman->waktu_kembali <br><br>
+			// 		Silahkan melakukan peminjaman alat atau komponen ke Laboratorium Gedung AI Polinema untuk mengambil alat atau komponen yang akan dipinjam. <br> Terima Kasih. </span>");
+			// 	if ($this->email->send()) {
+			// 		$this->session->set_flashdata('success', 'Status peminjaman <strong>Berhasil</strong> Diperbarui. Pemberitahuan email telah dikirimkan');
+			// 	} 
+			// }
 			redirect('peminjaman');
 		} else {
 			$this->session->set_flashdata('error', 'Status peminjaman <strong>Gagal</strong> Diperbarui!');
@@ -219,14 +231,24 @@ class Peminjaman extends CI_Controller {
 		$id = $this->input->post('id');
 		$status = $this->input->post('status');
 		$keterangan = $this->input->post('keterangan');
+		$arr_id_barang_detail = $this->input->post('id_barang');
+		$arr_keterangan = $this->input->post('keterangan');
 
-		$data = [
-			'keterangan' => $keterangan,
-		];
-
-		if($this->m_peminjaman->ubah($data, $id)){
-			$this->update_status($id, $status);
-		}
+		$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join_tanggungan($id);
+		foreach ($all_detail_peminjaman as $detail_peminjaman):
+			$id_detail = $detail_peminjaman->id;
+			$id_barang = $detail_peminjaman->id_barang;
+			$jumlah = $detail_peminjaman->jumlah;
+			if (isset($arr_id_barang_detail[$id_barang]) AND isset($arr_keterangan[$id_barang])) {
+				$data = [
+					'keterangan' => $keterangan[$id_barang],
+				];;
+				$this->m_detail_peminjaman->ubah($data, $id_detail);
+			} else {
+				$this->m_barang->plus_stok($jumlah, $id_barang) or die('gagal plus stok');
+			}
+		endforeach;
+		$this->update_status($id, $status);
 	}
 
 
@@ -246,13 +268,13 @@ class Peminjaman extends CI_Controller {
 
 		$this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
-	    $this->pdf->setPaper('A4', 'potrait');
+	    $this->pdf->setPaper('A4', 'landscape');
 	    $this->pdf->filename = 'Riwayat Transaksi Peminjaman ('.date('d-M-Y').').pdf';
 	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
 	}
 
 	public function export_rekap_filter(){
-		$data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'));
+		$data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter_all_parameter($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'), $this->input->post('kelas'), $this->input->post('semester'), $this->input->post('id_dosen'), $this->input->post('id_mk'), $this->input->post('id_pengguna'), $this->input->post('status'));
 		$data['title'] = 'Rekap Riwayat Transaksi Peminjaman';
 		if ($this->input->post('tanggal_awal') == $this->input->post('tanggal_akhir')) {
 			$data['periode'] = $this->input->post('tanggal_awal');
@@ -263,7 +285,7 @@ class Peminjaman extends CI_Controller {
 
 		$this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
-	    $this->pdf->setPaper('A4', 'potrait');
+	    $this->pdf->setPaper('A4', 'landscape');
 	    $this->pdf->filename = 'Riwayat Transaksi Peminjaman Periode'.$data['periode'].' ('.date('d-M-Y').').pdf';
 	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
 	}

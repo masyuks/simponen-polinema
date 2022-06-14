@@ -52,7 +52,6 @@
 										<td>No</td>
 										<td>Kode dosen</td>
 										<td>Nama dosen</td>
-										<td>Mata Kuliah</td>
 										<?php if ($this->session->login['role'] == 'teknisi'): ?>
 											<td>Aksi</td>
 										<?php endif ?>
@@ -64,7 +63,6 @@
 											<td><?= $no++ ?></td>
 											<td><?= $dosen->kode_dosen ?></td>
 											<td><?= $dosen->nama_dosen ?></td>
-											<td><?= $dosen->nama_mk ?></td>
 											<?php if ($this->session->login['role'] == 'teknisi'): ?>
 												<td>
 													<a href="<?= base_url('dosen/ubah/' . $dosen->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-pen"></i></a>

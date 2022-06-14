@@ -74,6 +74,7 @@
 										<button type="button" class="btn btn-success btn-block" name="cek" data-toggle="modal" data-target="#cekModal">
 											Cek Bebas Pinjaman
 										</button>
+										<!-- <a href="https://api.whatsapp.com/send?phone=085331607260&text=test">Test</a> -->
 									</form>
 									<div class="modal fade" id="cekModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">
