@@ -89,7 +89,7 @@
 										<div class="form-group col-3">
 											<label>Kelas</label>
 											<input type="text" name="kelas" value="" class="form-control" required>
-											<span style="color: red; font-size: 10px;">* Contoh 1D atau 4A</span>
+											<span style="color: red; font-size: 10px;">* Contoh: 1D atau 4A</span>
 										</div>
 										<div class="form-group col-3">
 											<label>Semester</label>

@@ -44,10 +44,12 @@
 										<div class="form-group col-md-6">
 											<label for="username_pengguna"><strong>Program Studi</strong></label>
 											<input type="text" name="username_pengguna" placeholder="Masukkan Username" autocomplete="off"  class="form-control" required>
+											<span style="color: red; font-size: 10px;">* Contoh: D3 Teknik Listrik</span>
 										</div>
 										<div class="form-group col-md-6">
 											<label for="jurusan_pengguna"><strong>Jurusan</strong></label>
 											<input type="text" name="jurusan_pengguna" placeholder="Masukkan Jurusan" autocomplete="off"  class="form-control" required>
+											<span style="color: red; font-size: 10px;">* Contoh: Teknik Elektro</span>
 										</div>
 									</div>
 									<div class="form-row">
