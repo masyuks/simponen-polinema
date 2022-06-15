@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2022 at 12:09 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- Generation Time: Jun 09, 2022 at 11:24 AM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 5.6.40
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -43,9 +43,8 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `kode_barang`, `nama_barang`, `path`, `stok`, `jenis`, `harga`) VALUES
-(9, 'SLDR', 'solder', 'SLDR.jpg', 30, 'alat', '200000'),
-(10, 'RST', 'Resistor', 'not_found.png', 20, 'komponen', '10000'),
-(11, 'CNT', 'Connector', 'CNT.jpg', 10, 'komponen', '100000');
+(9, 'SLDR', 'solder', 'SLDR.jpg', 17, 'alat', '200000'),
+(10, 'RST', 'Resistor', 'not_found.png', 2, 'komponen', '10000');
 
 -- --------------------------------------------------------
 
@@ -57,25 +56,17 @@ CREATE TABLE `detail_peminjaman` (
   `id` int(11) NOT NULL,
   `id_peminjaman` int(11) DEFAULT NULL,
   `id_barang` int(11) DEFAULT NULL,
-  `jumlah` int(11) DEFAULT NULL,
-  `keterangan` varchar(255) DEFAULT NULL
+  `jumlah` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `detail_peminjaman`
 --
 
-INSERT INTO `detail_peminjaman` (`id`, `id_peminjaman`, `id_barang`, `jumlah`, `keterangan`) VALUES
-(7, 12, 9, 1, NULL),
-(8, 13, 10, 1, '1 komponen rusak'),
-(9, 13, 9, 2, ''),
-(10, 14, 9, 1, 'solder rusak'),
-(11, 14, 10, 1, NULL),
-(12, 14, 11, 1, NULL),
-(14, 16, 11, 1, NULL),
-(15, 17, 9, 1, NULL),
-(16, 17, 10, 1, NULL),
-(17, 17, 11, 1, 'mengganti');
+INSERT INTO `detail_peminjaman` (`id`, `id_peminjaman`, `id_barang`, `jumlah`) VALUES
+(3, 9, 9, 2),
+(4, 9, 10, 1),
+(5, 10, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -87,17 +78,17 @@ CREATE TABLE `dosen` (
   `id` int(11) NOT NULL,
   `kode_dosen` varchar(20) NOT NULL,
   `nama_dosen` varchar(100) NOT NULL,
-  `jabatan` varchar(50) NOT NULL
+  `jabatan` varchar(50) NOT NULL,
+  `id_mk` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dosen`
 --
 
-INSERT INTO `dosen` (`id`, `kode_dosen`, `nama_dosen`, `jabatan`) VALUES
-(2, '101', 'Supri', 'Staff'),
-(3, '102', 'Yono', 'Staff'),
-(4, '103', 'Yusron', 'Dosen');
+INSERT INTO `dosen` (`id`, `kode_dosen`, `nama_dosen`, `jabatan`, `id_mk`) VALUES
+(2, '101', 'Supri', 'Staff', 3),
+(3, '102', 'Yono', 'Staff', 4);
 
 -- --------------------------------------------------------
 
@@ -117,8 +108,7 @@ CREATE TABLE `mk` (
 
 INSERT INTO `mk` (`id`, `kode_mk`, `nama_mk`) VALUES
 (3, 'JAR', 'Jaringan'),
-(4, 'WEB', 'Pemrograman Website'),
-(5, 'K3', 'Keselamatan & Kesehatan Kerja');
+(4, 'WEB', 'Pemrograman Website');
 
 -- --------------------------------------------------------
 
@@ -129,28 +119,22 @@ INSERT INTO `mk` (`id`, `kode_mk`, `nama_mk`) VALUES
 CREATE TABLE `peminjaman` (
   `id` int(11) NOT NULL,
   `status` varchar(20) DEFAULT NULL,
+  `keterangan` varchar(200) DEFAULT NULL,
   `waktu_pinjam` datetime DEFAULT NULL,
   `waktu_kembali` datetime DEFAULT NULL,
   `id_teknisi` int(11) DEFAULT NULL,
   `id_pengguna` int(11) DEFAULT NULL,
   `id_dosen` int(11) DEFAULT NULL,
-  `waktu_diajukan` datetime DEFAULT NULL,
-  `email_push` datetime DEFAULT NULL,
-  `id_mk` int(11) DEFAULT NULL,
-  `kelas` varchar(50) DEFAULT NULL,
-  `semester` varchar(50) DEFAULT NULL
+  `waktu_diajukan` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `peminjaman`
 --
 
-INSERT INTO `peminjaman` (`id`, `status`, `waktu_pinjam`, `waktu_kembali`, `id_teknisi`, `id_pengguna`, `id_dosen`, `waktu_diajukan`, `email_push`, `id_mk`, `kelas`, `semester`) VALUES
-(12, '4', '2022-06-14 10:44:00', '2022-06-14 11:44:00', 3, 3, 4, '2022-06-14 10:43:56', NULL, 3, '4A', '7'),
-(13, '4', '2022-06-15 11:21:00', '2022-06-15 12:21:00', 3, 4, 2, '2022-06-14 11:21:34', NULL, 4, '1D', '6'),
-(14, '4', '2022-06-16 14:13:00', '2022-06-16 15:13:00', 3, 4, 2, '2022-06-15 14:13:32', NULL, 5, '2C', '3'),
-(16, '4', '2022-06-15 16:39:00', '2022-06-15 16:38:00', 3, 5, 2, '2022-06-15 16:36:25', NULL, 4, '4A', '8'),
-(17, '4', '2022-06-15 16:37:00', '2022-06-15 18:42:00', 3, 5, 3, '2022-06-15 16:37:26', NULL, 3, '1B', '7');
+INSERT INTO `peminjaman` (`id`, `status`, `keterangan`, `waktu_pinjam`, `waktu_kembali`, `id_teknisi`, `id_pengguna`, `id_dosen`, `waktu_diajukan`) VALUES
+(9, '2', NULL, '2022-06-09 13:37:00', '2022-06-09 14:37:00', NULL, 3, 2, '2022-06-09 13:37:09'),
+(10, '1', NULL, '2022-06-09 13:52:00', '2022-06-09 14:53:00', NULL, 4, 3, '2022-06-09 13:52:49');
 
 -- --------------------------------------------------------
 
@@ -162,20 +146,17 @@ CREATE TABLE `pengguna` (
   `id` int(11) NOT NULL,
   `kode_pengguna` varchar(10) DEFAULT NULL,
   `nama_pengguna` varchar(100) DEFAULT NULL,
-  `username_pengguna` varchar(100) DEFAULT NULL,
-  `password_pengguna` varchar(255) DEFAULT NULL,
-  `email_pengguna` varchar(100) DEFAULT NULL,
-  `jurusan_pengguna` varchar(100) DEFAULT NULL
+  `username_pengguna` varchar(20) DEFAULT NULL,
+  `password_pengguna` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pengguna`
 --
 
-INSERT INTO `pengguna` (`id`, `kode_pengguna`, `nama_pengguna`, `username_pengguna`, `password_pengguna`, `email_pengguna`, `jurusan_pengguna`) VALUES
-(3, '1831710093', 'yuki', 'D3 Manajemen Informatika', '8b72529ec356bfa60828b4da6c2cc610', 'myukimiftakhurrizqi21@gmail.com', 'Teknik Informatika'),
-(4, '1831710163', 'Iqbal', 'D3 Manajemen Informatika', 'eedae20fc3c7a6e9c5b1102098771c70', 'iqbal@gmail.com', 'Teknik Informatika'),
-(5, '1841160077', 'Cindy Dwi Puspita Sari', 'D4 Jaringan Telekomunikasi Digital', 'cc4b2066cfef89f2475de1d4da4b29c7', 'cindy@gmail.com', 'Teknik Elektro');
+INSERT INTO `pengguna` (`id`, `kode_pengguna`, `nama_pengguna`, `username_pengguna`, `password_pengguna`) VALUES
+(3, '1831710093', 'yuki', 'yuki', '8b72529ec356bfa60828b4da6c2cc610'),
+(4, '1831710163', 'Iqbal', 'iqbal', 'eedae20fc3c7a6e9c5b1102098771c70');
 
 -- --------------------------------------------------------
 
@@ -252,37 +233,37 @@ ALTER TABLE `teknisi`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `detail_peminjaman`
 --
 ALTER TABLE `detail_peminjaman`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `dosen`
 --
 ALTER TABLE `dosen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `mk`
 --
 ALTER TABLE `mk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `teknisi`
