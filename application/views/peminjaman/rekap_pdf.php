@@ -93,10 +93,6 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
 				</tr>
 			<?php } ?>
 		</tbody>

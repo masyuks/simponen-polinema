@@ -158,11 +158,8 @@
 																	echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
 																}
 															} else if ($peminjaman->status == '3') {
-																if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) {
+																if ($peminjaman->status == '3') {
 																	echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
-																}
-																else {
-																	echo "<span class='badge badge-pill badge-success'>Selesai</span>";
 																}
 															} else if ($peminjaman->status == '4') {
 																echo "<span class='badge badge-pill badge-success'>Selesai</span>";
@@ -199,6 +196,11 @@
 									<?php if ($jumlah_overtime > 0) { ?>
 										<div class="alert alert-danger alert-dismissible fade show" role="alert">
 											Anda memiliki <strong><?= $jumlah_overtime ?> peminjaman</strong> yang sudah overtime.
+										</div>
+									<?php } ?>
+									<?php if ($jumlah_ditolak > 0) { ?>
+										<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+											<strong><?= $jumlah_ditolak ?> pengajuan</strong> peminjaman anda ditolak
 										</div>
 									<?php } ?>
 								</div>				

@@ -109,6 +109,12 @@
 					<span>Rekap Peminjaman</span></a>
 			</li>
 
+			<li class="nav-item <?= $aktif == 'tanggungan' ? 'active' : '' ?>">
+				<a class="nav-link" href="<?= base_url('peminjaman/tanggungan') ?>">
+					<i class="fas fa-fw fa-file-excel"></i>
+					<span>Tanggungan Peminjaman</span></a>
+			</li>
+
 			<hr class="sidebar-divider">
 			<?php if ($this->session->login['role'] == 'teknisi'): ?>
 				<!-- Heading -->

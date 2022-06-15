@@ -54,12 +54,46 @@ class Peminjaman extends CI_Controller {
 	public function filterRekap(){
 		$this->data['aktif'] = 'rekap';
 		$this->data['title'] = 'Rekap peminjaman Barang';
+		$this->data['all_dosen'] = $this->m_dosen->lihat();
+		$this->data['all_mk'] = $this->m_mk->lihat();
+		$this->data['all_pengguna'] = $this->m_pengguna->lihat();
+		$this->data['all_kelas'] = $this->m_peminjaman->kelas();
 		if ($this->session->login['role'] == 'teknisi') {
 			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'));
 		} else {
 			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter_mahasiswa($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'));
 		}
 		$this->load->view('peminjaman/rekap', $this->data);
+	}
+
+	public function tanggungan(){
+		$this->data['aktif'] = 'tanggungan';
+		$this->data['title'] = 'Tanggungan peminjaman Barang';
+		$this->data['all_dosen'] = $this->m_dosen->lihat();
+		$this->data['all_mk'] = $this->m_mk->lihat();
+		$this->data['all_pengguna'] = $this->m_pengguna->lihat();
+		$this->data['all_kelas'] = $this->m_peminjaman->kelas();
+		if ($this->session->login['role'] == 'teknisi') {
+			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full();
+		} else {
+			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_mahasiswa();
+		}
+		$this->load->view('peminjaman/tanggungan', $this->data);
+	}
+
+	public function filterTanggungan(){
+		$this->data['aktif'] = 'tanggungan';
+		$this->data['title'] = 'Tanggungan peminjaman Barang';
+		$this->data['all_dosen'] = $this->m_dosen->lihat();
+		$this->data['all_mk'] = $this->m_mk->lihat();
+		$this->data['all_pengguna'] = $this->m_pengguna->lihat();
+		$this->data['all_kelas'] = $this->m_peminjaman->kelas();
+		if ($this->session->login['role'] == 'teknisi') {
+			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'));
+		} else {
+			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_filter_mahasiswa($this->input->post('tanggal_awal'), $this->input->post('tanggal_akhir'));
+		}
+		$this->load->view('peminjaman/tanggungan', $this->data);
 	}
 
 	public function tambah(){
@@ -152,6 +186,16 @@ class Peminjaman extends CI_Controller {
 		}
 	}
 
+	public function hapus_only($id){
+		if($this->m_peminjaman->hapus($id) && $this->m_detail_peminjaman->hapus($id)){
+			$this->session->set_flashdata('success', 'Data peminjaman <strong>Berhasil</strong> Dihapus!');
+			redirect($_SERVER['HTTP_REFERER']);
+		} else {
+			$this->session->set_flashdata('error', 'Data peminjaman <strong>Gagal</strong> Dihapus!');
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+	}
+
 	public function update_status($id, $status){
 		if ($status == 5) {
 			$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join($id);
@@ -226,28 +270,33 @@ class Peminjaman extends CI_Controller {
 		}
 	}
 
-	public function tanggungan(){
+	public function set_tanggungan(){
 		$id = $this->input->post('id');
 		$status = $this->input->post('status');
 		$keterangan = $this->input->post('keterangan');
 		$arr_id_barang_detail = $this->input->post('id_barang');
 		$arr_keterangan = $this->input->post('keterangan');
 
-		$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join_tanggungan($id);
-		foreach ($all_detail_peminjaman as $detail_peminjaman):
-			$id_detail = $detail_peminjaman->id;
-			$id_barang = $detail_peminjaman->id_barang;
-			$jumlah = $detail_peminjaman->jumlah;
-			if (isset($arr_id_barang_detail[$id_barang]) AND isset($arr_keterangan[$id_barang])) {
-				$data = [
-					'keterangan' => $keterangan[$id_barang],
-				];;
-				$this->m_detail_peminjaman->ubah($data, $id_detail);
-			} else {
-				$this->m_barang->plus_stok($jumlah, $id_barang) or die('gagal plus stok');
-			}
-		endforeach;
-		$this->update_status($id, $status);
+		if (count($arr_id_barang_detail) > 0) {
+			$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join_tanggungan($id);
+			foreach ($all_detail_peminjaman as $detail_peminjaman):
+				$id_detail = $detail_peminjaman->id;
+				$id_barang = $detail_peminjaman->id_barang;
+				$jumlah = $detail_peminjaman->jumlah;
+				if (isset($arr_id_barang_detail[$id_barang]) AND isset($arr_keterangan[$id_barang])) {
+					$data = [
+						'keterangan' => $keterangan[$id_barang],
+					];
+					$this->m_detail_peminjaman->ubah($data, $id_detail);
+				} else {
+					$this->m_barang->plus_stok($jumlah, $id_barang) or die('gagal plus stok');
+				}
+			endforeach;
+			$this->update_status($id, $status);
+		} else {
+			$this->session->set_flashdata('error', 'Status peminjaman <strong>Gagal</strong> Diperbarui. Tidak ada tanggungan barang yang dipilih.');
+			redirect('peminjaman');
+		}
 	}
 
 	public function selesai($id, $status, $last_status){

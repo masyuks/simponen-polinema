@@ -136,8 +136,10 @@
 											</td>
 											<td>
 												<a href="<?= base_url('peminjaman/detail/' . $peminjaman->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
-												<?php if (($peminjaman->status == '1' || $peminjaman->status == '2' || ($peminjaman->status == '3') AND $this->session->login['role'] == 'teknisi')) { ?>
+												<?php if (($peminjaman->status == '1' || $peminjaman->status == '2') AND $this->session->login['role'] == 'teknisi') { ?>
 													<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+												<?php } else if (($peminjaman->status == '4' || $peminjaman->status == '5') AND $this->session->login['role'] == 'teknisi') { ?>
+													<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus_only/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
 												<?php } else if ($peminjaman->status == '1' AND $this->session->login['role'] == 'mahasiswa') { ?>
 													<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
 												<?php } ?>

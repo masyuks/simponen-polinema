@@ -20,17 +20,15 @@
 							<h1 class="h3 m-0 text-gray-800"><?= $title ?></h1>
 						</div>
 						<div class="float-right">
-							<?php if ($this->session->login['role'] == 'teknisi') { ?>
-							<a href="#" class="btn btn-danger btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-pdf"></i>&nbsp;&nbsp;Export</a>
-							<!-- Dropdown - User Information -->
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<!-- <a href="#" class="btn btn-danger btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-pdf"></i>&nbsp;&nbsp;Export</a>
+ -->							<!-- Dropdown - User Information -->
+							<!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 								<a class="dropdown-item" href="#" data-toggle="modal" data-target="#filterModal">Filter</a>
 								<a class="dropdown-item" href="<?= base_url('peminjaman/export_rekap') ?>">Semua</a>
-							</div>
-							<?php } ?>
+							</div> -->
 							<a href="<?= base_url('peminjaman/tambah') ?>" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah</a>
 						</div>
-						<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<!-- <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<form action="<?= base_url('peminjaman/export_rekap_filter') ?>" id="form-filter" method="POST">
@@ -119,19 +117,6 @@
 														</select>
 													</div>
 												</div>
-												<!-- <div class="col-6">
-													<div class="form-group">
-														<label for="message-text" class="col-form-label">Semester</label>
-														<select name="status" id="status" class="form-control">
-															<option selected disabled>Pilih Status</option>
-															<option value="1">Diajukan</option>
-															<option value="2">Diterima</option>
-															<option value="3">Tanggungan</option>
-															<option value="4">Selesai</option>
-															<option value="5">Ditolak</option>
-														</select>
-													</div>
-												</div> -->
 											</div>
 										</div>
 										<div class="modal-footer">
@@ -141,7 +126,7 @@
 									</form>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<hr>
 					<?php if ($this->session->flashdata('success')) : ?>
@@ -160,10 +145,10 @@
 						</div>
 					<?php endif ?>
 					<div class="card shadow">
-						<div class="card-header"><strong>Rekap Peminjaman Barang</strong></div>
+						<div class="card-header"><strong>Tanggungan Peminjaman Barang</strong></div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<form action="<?= base_url('peminjaman/filterRekap') ?>" id="form-filter" method="POST">
+								<form action="<?= base_url('peminjaman/filterTanggungan') ?>" id="form-filter" method="POST">
 									<div class="row">
 										<div class="col-5">
 											<div class="form-group">
@@ -216,10 +201,10 @@
 											<td>NIM</td>
 											<td>Nama Mahasiswa</td>
 											<td>Program Studi</td>
-											<td>Kelas</td>
-											<td>Semester</td>
-											<td>Mata Kuliah</td>
-											<td>Dosen</td>
+											<!-- <td>Kelas</td> -->
+											<!-- <td>Semester</td> -->
+											<!-- <td>Mata Kuliah</td> -->
+											<!-- <td>Dosen</td> -->
 											<td>Waktu Pinjam</td>
 											<td>Waktu Kembali</td>
 											<td>Kode Barang</td>
@@ -227,18 +212,20 @@
 											<td>Jumlah</td>
 											<td>Status</td>
 											<td>Keterangan</td>
+											<td>Aksi</td>
 										</tr>
 									</thead>
 									<tbody>
 										<?php foreach ($all_peminjaman as $peminjaman): ?>
+											<?php if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) { ?>
 											<tr>
 												<td><?= $peminjaman->nim ?></td>
 												<td><?= $peminjaman->nama_pengguna ?></td>
 												<td><?= $peminjaman->username_pengguna ?></td>
-												<td><?= $peminjaman->kelas ?></td>
-												<td><?= $peminjaman->semester ?></td>
-												<td><?= $peminjaman->nama_mk ?></td>
-												<td><?= $peminjaman->nama_dosen ?></td>
+												<!-- <td><?= $peminjaman->kelas ?></td> -->
+												<!-- <td><?= $peminjaman->semester ?></td> -->
+												<!-- <td><?= $peminjaman->nama_mk ?></td> -->
+												<!-- <td><?= $peminjaman->nama_dosen ?></td> -->
 												<td><?= $peminjaman->waktu_pinjam ?></td>
 												<td><?= $peminjaman->waktu_kembali ?></td>
 												<td><?= $peminjaman->kode_barang ?></td>
@@ -276,7 +263,11 @@
 											<?php } else { ?>
 												<td></td>
 											<?php } ?>
+											<td>
+												<a href="<?= base_url('peminjaman/selesai/'.$peminjaman->id.'/4/'.$peminjaman->status) ?>" class="btn btn-success">Selesai</a>
+											</td>
 										</tr>
+										<?php } ?>
 									<?php endforeach ?>
 								</tbody>
 							</table>

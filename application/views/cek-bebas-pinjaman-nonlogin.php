@@ -166,7 +166,7 @@
 															echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
 														}
 													} else if ($peminjaman->status == '3') {
-														if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) {
+														if ($peminjaman->status == '3') {
 															echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
 														}
 														else {

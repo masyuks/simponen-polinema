@@ -78,11 +78,13 @@
 					$semester[$i] = 0;
 				}
 				foreach ($all_peminjaman as $peminjaman) {
-					for ($i=1; $i <= 8; $i++) { 
-						if ($peminjaman->semester == $i) {
-							$semester[$i]++;
-						}
-					} 
+					if ($peminjaman->status == 4) {
+						for ($i=1; $i <= 8; $i++) { 
+							if ($peminjaman->semester == $i) {
+								$semester[$i]++;
+							}
+						} 
+					}
 				}
 				for ($i=1; $i <= 8; $i++) { 
 				?>
