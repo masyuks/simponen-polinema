@@ -36,6 +36,14 @@
 							</button>
 						</div>
 					<?php endif ?>
+					<?php if($this->session->flashdata('overtime')) { ?>
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<?= $this->session->flashdata('overtime') ?>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					<?php } ?>
 					<div class="row">
 
 						<!-- Earnings (Monthly) Card Example -->
@@ -140,6 +148,11 @@
 										<?php if ($jumlah_tanggungan > 0) { ?>
 											<div class="alert alert-danger alert-dismissible fade show" role="alert">
 												<strong><?= $jumlah_tanggungan ?> mahasiswa</strong> memiliki tanggungan yang harus diselesaikan
+											</div>
+										<?php } ?>
+										<?php if ($jumlah_overtime > 0) { ?>
+											<div class="alert alert-danger alert-dismissible fade show" role="alert">
+												Anda memiliki <strong><?= $jumlah_overtime ?> peminjaman</strong> yang sudah overtime.
 											</div>
 										<?php } ?>
 									<?php } ?>

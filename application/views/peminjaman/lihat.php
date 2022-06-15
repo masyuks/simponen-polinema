@@ -97,6 +97,7 @@
 											<td>NIM</td>
 											<td>Nama Mahasiswa</td>
 											<td>Dosen</td>
+											<td>Mata Kuliah</td>
 											<td>Waktu Pinjam</td>
 											<td>Waktu Kembali</td>
 											<td>Status</td>
@@ -109,6 +110,7 @@
 												<td><?= $peminjaman->nim ?></td>
 												<td><?= $peminjaman->nama_pengguna ?></td>
 												<td><?= $peminjaman->nama_dosen ?></td>
+												<td><?= $peminjaman->nama_mk ?></td>
 												<td><?= $peminjaman->waktu_pinjam ?></td>
 												<td><?= $peminjaman->waktu_kembali ?></td>
 												<td><?php
@@ -134,7 +136,9 @@
 											</td>
 											<td>
 												<a href="<?= base_url('peminjaman/detail/' . $peminjaman->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
-												<?php if ($peminjaman->status == '1' || $peminjaman->status == '2' || ($peminjaman->status == '3' AND $this->session->login['role'] == 'teknisi')) { ?>
+												<?php if (($peminjaman->status == '1' || $peminjaman->status == '2' || ($peminjaman->status == '3') AND $this->session->login['role'] == 'teknisi')) { ?>
+													<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+												<?php } else if ($peminjaman->status == '1' AND $this->session->login['role'] == 'mahasiswa') { ?>
 													<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
 												<?php } ?>
 											</td>

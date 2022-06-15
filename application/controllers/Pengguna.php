@@ -46,6 +46,7 @@ class Pengguna extends CI_Controller {
 			'username_pengguna' => $this->input->post('username_pengguna'),
 			'password_pengguna' => md5($this->input->post('password_pengguna')),
 			'email_pengguna' => $this->input->post('email_pengguna'),
+			'jurusan_pengguna' => $this->input->post('jurusan_pengguna'),
 		];
 
 		if($this->m_pengguna->tambah($data)){
@@ -84,6 +85,7 @@ class Pengguna extends CI_Controller {
 				'username_pengguna' => $this->input->post('username_pengguna'),
 				'password_pengguna' => md5($this->input->post('password_pengguna')),
 				'email_pengguna' => $this->input->post('email_pengguna'),
+				'jurusan_pengguna' => $this->input->post('jurusan_pengguna'),
 			];
 		} else {
 			$data = [
@@ -91,6 +93,7 @@ class Pengguna extends CI_Controller {
 				'nama_pengguna' => $this->input->post('nama_pengguna'),
 				'username_pengguna' => $this->input->post('username_pengguna'),
 				'email_pengguna' => $this->input->post('email_pengguna'),
+				'jurusan_pengguna' => $this->input->post('jurusan_pengguna'),
 			];
 		}
 

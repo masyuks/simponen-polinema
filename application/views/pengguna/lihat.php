@@ -51,6 +51,7 @@
 										<td>NIM</td>
 										<td>Nama Lengkap</td>
 										<td>Program Studi</td>
+										<td>Jurusan</td>
 										<td>Email</td>
 										<td>Aksi</td>
 									</tr>
@@ -62,6 +63,7 @@
 											<td><?= $pengguna->kode_pengguna ?></td>
 											<td><?= $pengguna->nama_pengguna ?></td>
 											<td><?= $pengguna->username_pengguna ?></td>
+											<td><?= $pengguna->jurusan_pengguna ?></td>
 											<td><?= $pengguna->email_pengguna ?></td>
 											<td>
 												<a href="<?= base_url('pengguna/ubah/' . $pengguna->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-pen"></i></a>

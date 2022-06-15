@@ -14,6 +14,23 @@ class Dashboard extends CI_Controller {
 	public function index(){
 		$this->data['title'] = 'Halaman Dashboard';
 		if ($this->session->login['role'] == 'teknisi') {
+			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join();
+			$ovt = 0;
+			foreach ($this->data['all_peminjaman'] as $peminjaman):
+				if ($peminjaman->status == '2') {
+					date_default_timezone_set("Asia/Bangkok");
+					$time = strtotime($peminjaman->waktu_kembali);
+					$now = strtotime(date('Y-m-d H:i:s'));
+					if ($now >= $time) {
+						$ovt++;
+					} 
+				}
+			endforeach;
+
+			if ($ovt > 0) {
+				$this->session->set_flashdata('overtime', 'Terdapat <strong>'.$ovt.' Peminjaman</strong> yang overtime.');
+			}
+			$this->data['jumlah_overtime'] = $ovt;
 			$this->data['jumlah_barang'] = $this->m_barang->jumlah();
 			$this->data['jumlah_teknisi'] = $this->m_teknisi->jumlah();
 			$this->data['jumlah_peminjaman'] = $this->m_peminjaman->jumlah();
@@ -24,6 +41,22 @@ class Dashboard extends CI_Controller {
 			$this->load->view('dashboard', $this->data);
 		} else {
 			$this->data['all_peminjaman'] = $this->m_peminjaman->lihat_join_mahasiswa();
+			$ovt = 0;
+			foreach ($this->data['all_peminjaman'] as $peminjaman):
+				if ($peminjaman->status == '2') {
+					date_default_timezone_set("Asia/Bangkok");
+					$time = strtotime($peminjaman->waktu_kembali);
+					$now = strtotime(date('Y-m-d H:i:s'));
+					if ($now >= $time) {
+						$ovt++;
+					} 
+				}
+			endforeach;
+
+			if ($ovt > 0) {
+				$this->session->set_flashdata('overtime', 'Terdapat <strong>'.$ovt.' Peminjaman</strong> yang overtime.');
+			}
+			$this->data['jumlah_overtime'] = $ovt;
 			$this->data['jumlah_peminjaman'] = $this->m_peminjaman->jumlah_mahasiswa();
 			$this->data['jumlah_tanggungan'] = $this->m_peminjaman->jumlah_tanggungan_mahasiswa();
 			$this->data['jumlah_pengajuan'] = $this->m_peminjaman->jumlah_pengajuan_mahasiswa();

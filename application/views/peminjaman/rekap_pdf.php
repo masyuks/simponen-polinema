@@ -8,11 +8,22 @@
 	<link rel="shortcut icon" href="<?=base_url()?>assets/img/polinema-loss.png">
 </head>
 <body>
-	<div class="row">
+	<!-- <div class="row">
 		<br>
 		<img src="<?=base_url()?>assets/img/polinema-loss.png" style="width: 80px; margin-left: 3%;">
 		<img src="<?=base_url()?>assets/img/kan-logo.jpg" style="width: 85px; margin-left: 80%;">
 		<div class="col-8 text-center" style="margin-top: -90px; margin-left: 170px;">
+			<span style="font-family: serif; color: black;">
+				<strong>KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN <br> POLITEKNIK NEGERI MALANG </strong> <br> Jalan Soekarno-Hatta No.9 Malang 65141 <br>
+				Telp (0341) 404424-404425 Fax (0341) 404420
+			</span>
+		</div>
+	</div> -->
+	<div class="row">
+		<br>
+		<img src="<?=base_url()?>assets/img/polinema-loss.png" style="width: 80px; margin-left: 3%;">
+		<img src="<?=base_url()?>assets/img/kan-logo.jpg" style="width: 85px; margin-left: 71%;">
+		<div class="col-8 text-center" style="margin-top: -90px; margin-left: 100px;">
 			<span style="font-family: serif; color: black;">
 				<strong>KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN <br> POLITEKNIK NEGERI MALANG </strong> <br> Jalan Soekarno-Hatta No.9 Malang 65141 <br>
 				Telp (0341) 404424-404425 Fax (0341) 404420
@@ -37,18 +48,15 @@
 				<tr>
 					<th>NIM</th>
 					<th>Nama Mahasiswa</th>
-					<th>Program Studi</th>
 					<th>Kelas</th>
 					<th>Semester</th>
 					<th>Mata Kuliah</th>
 					<th>Dosen</th>
 					<th>Waktu Pinjam</th>
 					<th>Waktu Kembali</th>
-					<th>Kode Barang</th>
 					<th>Barang</th>
 					<th>Jumlah</th>
-					<th>Status</th>
-					<th>Keterangan</th>
+					<!-- <th>Keterangan</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -58,36 +66,19 @@
 						<tr>
 							<td><?= $peminjaman->nim ?></td>
 							<td><?= $peminjaman->nama_pengguna ?></td>
-							<td><?= $peminjaman->username_pengguna ?></td>
 							<td><?= $peminjaman->kelas ?></td>
 							<td><?= $peminjaman->semester ?></td>
 							<td><?= $peminjaman->nama_mk ?></td>
 							<td><?= $peminjaman->nama_dosen ?></td>
 							<td><?= $peminjaman->waktu_pinjam ?></td>
 							<td><?= $peminjaman->waktu_kembali ?></td>
-							<td><?= $peminjaman->kode_barang ?></td>
 							<td><?= $peminjaman->nama_barang ?></td>
 							<td><?= $peminjaman->jumlah ?></td>
-							<td><?php
-							if ($peminjaman->status == '1') {
-								echo "Diajukan";
-							} else if ($peminjaman->status == '2') {
-								echo "Diterima";
-							} else if ($peminjaman->status == '3') {
-								if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) {
-									echo "Tanggungan";
-								}
-								else {
-									echo "Selesai";
-								}
-							} else if ($peminjaman->status == '4') {
-								echo "Selesai";
-							} else if ($peminjaman->status == '5') {
-								echo "Ditolak";
-							} 
-							?>
-						</td>
-						<td><?= $peminjaman->keterangan ?></td>
+						<!-- <?php if ($peminjaman->status == '3') { ?>
+							<td><?= $peminjaman->keterangan ?></td>
+						<?php } else { ?>
+							<td></td>
+						<?php } ?> -->
 					</tr>
 				<?php endforeach ?>
 			<?php } else { ?>

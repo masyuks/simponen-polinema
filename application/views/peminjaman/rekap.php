@@ -242,7 +242,8 @@
 												<td><?= $peminjaman->kode_barang ?></td>
 												<td><?= $peminjaman->nama_barang ?></td>
 												<td><?= $peminjaman->jumlah ?></td>
-												<td><?php
+												<td>
+												<?php
 												if ($peminjaman->status == '1') {
 													echo "<span class='badge badge-pill badge-info'>Diajukan</span>";
 												} else if ($peminjaman->status == '2') {
@@ -268,7 +269,11 @@
 												} 
 												?>
 											</td>
-											<td><?= $peminjaman->keterangan ?></td>
+											<?php if ($peminjaman->status == '3') { ?>
+												<td><?= $peminjaman->keterangan ?></td>
+											<?php } else { ?>
+												<td></td>
+											<?php } ?>
 										</tr>
 									<?php endforeach ?>
 								</tbody>

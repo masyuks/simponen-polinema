@@ -8,26 +8,29 @@ class M_peminjaman extends CI_Model {
 	}
 
 	public function lihat_join(){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		return $this->db->get($this->_table)->result();
 	} 
 
 	public function lihat_join_today(){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		$this->db->where('waktu_pinjam>=', date('Y-m-d').' 00:00:00');
 		return $this->db->get($this->_table)->result();
 	} 
 
 	public function lihat_join_filter($tanggal_awal, $tanggal_akhir){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		$this->db->where('waktu_pinjam>=', $tanggal_awal.' 00:00:00');
 		$this->db->where('waktu_pinjam<=', $tanggal_akhir.' 23:59:00');
@@ -94,18 +97,21 @@ class M_peminjaman extends CI_Model {
 	}
 
 	public function lihat_join_mahasiswa(){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		$this->db->where('id_pengguna', $this->session->login['id']);
+		$this->db->order_by('peminjaman.id', 'desc');
 		return $this->db->get($this->_table)->result();
 	} 
 
 	public function lihat_join_today_mahasiswa(){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		$this->db->where('waktu_pinjam>=', date('Y-m-d').' 00:00:00');
 		$this->db->where('id_pengguna', $this->session->login['id']);
@@ -113,9 +119,10 @@ class M_peminjaman extends CI_Model {
 	} 
 
 	public function lihat_join_filter_mahasiswa($tanggal_awal, $tanggal_akhir){
-		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen');
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, dosen.nama_dosen, mk.nama_mk');
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		$this->db->where('waktu_pinjam>=', $tanggal_awal.' 00:00:00');
 		$this->db->where('waktu_pinjam<=', $tanggal_akhir.' 23:59:00');
@@ -158,6 +165,7 @@ class M_peminjaman extends CI_Model {
 		$this->db->join('barang','detail_peminjaman.id_barang=barang.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
 		$this->db->where('kode_pengguna', $kode_pengguna);
+		$this->db->group_by('peminjaman.semester');
 		return $this->db->get($this->_table)->result();
 	} 
 
@@ -236,7 +244,9 @@ class M_peminjaman extends CI_Model {
 		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
 		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
 		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
-		$this->db->where('status', '3');
+		$this->db->where('status!=', '1');
+		$this->db->where('status!=', '4');
+		$this->db->where('status!=', '5');
 		$this->db->where('pengguna.kode_pengguna', $kode_pengguna);
 		$query = $this->db->get($this->_table);
 		return $query->num_rows();

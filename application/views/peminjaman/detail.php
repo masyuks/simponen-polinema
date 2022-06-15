@@ -145,7 +145,11 @@
 														<td><?= $detail_peminjaman->kode_barang ?></td>
 														<td><?= $detail_peminjaman->jenis ?></td>
 														<td><?= $detail_peminjaman->jumlah ?></td>
-														<td><?= $detail_peminjaman->keterangan ?></td>
+														<?php if ($peminjaman->status == '3') { ?>
+															<td><?= $detail_peminjaman->keterangan ?></td>
+														<?php } else { ?>
+															<td></td>
+														<?php } ?>
 													</tr>
 												<?php endforeach ?>
 											</tbody>
@@ -161,7 +165,7 @@
 										<?php } ?>
 										<?php if ($peminjaman->status == '2') { ?>
 											<div style="text-align: center;">
-												<a href="<?= base_url('peminjaman/update_status/'.$peminjaman->id.'/4') ?>" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp; Selesai &nbsp;&nbsp;</a>
+												<a href="<?= base_url('peminjaman/selesai/'.$peminjaman->id.'/4/'.$peminjaman->status) ?>" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp; Selesai &nbsp;&nbsp;</a>
 												&nbsp;
 												<a href="#" class="btn btn-danger" data-toggle="modal" data-target="#tanggunganModal"><i class="fa fa-times"></i> Tanggungan </a>
 											</div>
@@ -179,7 +183,7 @@
 																<div class="form-group">
 																	<label for="message-text" class="col-form-label">Pilih Barang Tanggungan (Rusak, Hilang Dsb.):</label>	
 																	<br>
-																	<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+																	<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;height: 300px;">
 																		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 																			<thead>
 																				<tr>
@@ -221,7 +225,7 @@
 										<?php } ?>
 										<?php if ($peminjaman->status == '3') { ?>
 											<div style="text-align: center;">
-												<a href="<?= base_url('peminjaman/update_status/'.$peminjaman->id.'/4') ?>" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp; Selesai &nbsp;&nbsp;</a>
+												<a href="<?= base_url('peminjaman/selesai/'.$peminjaman->id.'/4/'.$peminjaman->status) ?>" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp; Selesai &nbsp;&nbsp;</a>
 											</div>
 										<?php } ?>
 									<?php } ?>

@@ -26,11 +26,9 @@
 				<?= $title; ?>
 			</center>
 		</span>
-		<br>
 		<span style="font-family: serif; color: black; font-size: 15px;">
 			Yang berdata diri dibawah ini :
 		</span>
-		<br>
 		<br>
 		<div class="row">
 			<div class="col-md-4">
@@ -51,6 +49,11 @@
 							<td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
 							<td><?= $pengguna->username_pengguna ?></td>
 						</tr>
+						<tr>
+							<td>Jurusan</td>
+							<td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+							<td><?= $pengguna->jurusan_pengguna ?></td>
+						</tr>
 					<?php endforeach ?>
 				</table>
 			</div>
@@ -65,42 +68,30 @@
 		<table style="font-family: serif; color: black; text-align: center;" border="1" width="97%">
 			<thead>
 				<tr>
-					<th>NIM</th>
-					<th>Nama Mahasiswa</th>
-					<th>Waktu Pinjam</th>
-					<th>Waktu Kembali</th>
-					<th>Kode Barang</th>
-					<th>Jumlah</th>
-					<th>Status</th>
-					<th>Keterangan</th>
+					<th>Periode</th>
+					<th>Jumlah Peminjaman</th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($all_peminjaman as $peminjaman): ?>
-					<tr>
-						<td><?= $peminjaman->nim ?></td>
-						<td><?= $peminjaman->nama_pengguna ?></td>
-						<td><?= $peminjaman->waktu_pinjam ?></td>
-						<td><?= $peminjaman->waktu_kembali ?></td>
-						<td><?= $peminjaman->kode_barang ?></td>
-						<td><?= $peminjaman->jumlah ?></td>
-						<td><?php
-						if ($peminjaman->status == '1') {
-							echo "Diajukan";
-						} else if ($peminjaman->status == '2') {
-							echo "Diterima";
-						} else if ($peminjaman->status == '3') {
-							echo "Tanggungan";
-						} else if ($peminjaman->status == '4') {
-							echo "Selesai";
-						} else if ($peminjaman->status == '5') {
-							echo "Ditolak";
-						} 
-						?>
-					</td>
-					<td><?= $peminjaman->keterangan ?></td>
+				<?php 
+				for ($i=1; $i <= 8; $i++) { 
+					$semester[$i] = 0;
+				}
+				foreach ($all_peminjaman as $peminjaman) {
+					for ($i=1; $i <= 8; $i++) { 
+						if ($peminjaman->semester == $i) {
+							$semester[$i]++;
+						}
+					} 
+				}
+				for ($i=1; $i <= 8; $i++) { 
+				?>
+				<tr>
+					<td>Semester <?= $i ?></td>
+					<td><?= $semester[$i] ?> Peminjaman Selesai</td>
+				
 				</tr>
-			<?php endforeach ?>
+				<?php } ?>
 		</tbody>
 	</table>
 	<br>
@@ -118,7 +109,7 @@
 </span>
 <br><br><br><br>
 <span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
-	Lorem Ipsum, S.H., M.Hum,
+	Usman Z., ST.
 </span>
 <script src="<?= base_url('sb-admin') ?>/vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('sb-admin') ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

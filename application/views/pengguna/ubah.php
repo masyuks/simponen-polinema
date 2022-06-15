@@ -46,11 +46,15 @@
 											<input type="text" name="username_pengguna" placeholder="Masukkan Username" autocomplete="off"  class="form-control" required value="<?= $pengguna->username_pengguna ?>">
 										</div>
 										<div class="form-group col-md-6">
-											<label for="email_pengguna"><strong>Email</strong></label>
-											<input type="email" name="email_pengguna" placeholder="Masukkan Email" autocomplete="off"  class="form-control" required value="<?= $pengguna->email_pengguna ?>">
+											<label for="jurusan_pengguna"><strong>Jurusan</strong></label>
+											<input type="text" name="jurusan_pengguna" placeholder="Masukkan Jurusan" autocomplete="off"  class="form-control" required value="<?= $pengguna->jurusan_pengguna ?>">
 										</div>
 									</div>
 									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="email_pengguna"><strong>Email</strong></label>
+											<input type="email" name="email_pengguna" placeholder="Masukkan Email" autocomplete="off"  class="form-control" required value="<?= $pengguna->email_pengguna ?>">
+										</div>
 										<div class="form-group col-md-6">
 											<label for="password_pengguna"><strong>Password</strong></label>
 											<input type="text" name="password_pengguna" autocomplete="off"  class="form-control">

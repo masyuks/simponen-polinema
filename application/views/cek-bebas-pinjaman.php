@@ -74,7 +74,7 @@
 							<?php if ($jumlah_pengguna > 0) { ?>
 								<?php if ($jumlah_tanggungan > 0) { ?>
 									<div class="alert alert-danger alert-dismissible fade show" role="alert">
-										Anda memiliki <strong><?= $jumlah_tanggungan ?> tanggungan</strong> yang harus diselesaikan
+										Anda memiliki <strong><?= $jumlah_tanggungan ?> tanggungan peminjaman</strong> yang harus diselesaikan
 									</div>
 								<?php } else { ?>
 									<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -110,50 +110,65 @@
 									</thead>
 									<tbody>
 										<?php foreach ($all_peminjaman as $peminjaman): ?>
-											<?php if ($peminjaman->status == '3') { ?>
+											<?php if ($peminjaman->status == '3' || $peminjaman->status == '2') { ?>
 												<tr>
 													<td><?= $peminjaman->nim ?></td>
 													<td><?= $peminjaman->nama_pengguna ?></td>
 													<td><?= $peminjaman->nama_dosen ?></td>
 													<td><?= $peminjaman->waktu_pinjam ?></td>
 													<td><?= $peminjaman->waktu_kembali ?></td>
-													<td><?php
-													if ($peminjaman->status == '1') {
-														echo "Diajukan";
-													} else if ($peminjaman->status == '2') {
-														echo "Diterima";
-													} else if ($peminjaman->status == '3') {
-														echo "Tanggungan";
-													} else if ($peminjaman->status == '4') {
-														echo "Selesai";
-													} else if ($peminjaman->status == '5') {
-														echo "Ditolak";
-													} 
-													?>
-												</td>
-												<td>
-													<a href="<?= base_url('peminjaman/detail/' . $peminjaman->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
-													<?php if ($peminjaman->status == '1' || $peminjaman->status == '2' || ($peminjaman->status == '3' AND $this->session->login['role'] == 'teknisi')) { ?>
-														<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-													<?php } ?>
-												</td>
-											</tr>
-										<?php } ?>
-									<?php endforeach ?>
-								</tbody>
-							</table>
-						</div>
-					</div>				
+													<td>
+														<?php
+														if ($peminjaman->status == '1') {
+															echo "<span class='badge badge-pill badge-info'>Diajukan</span>";
+														} else if ($peminjaman->status == '2') {
+															date_default_timezone_set("Asia/Bangkok");
+															$time = strtotime($peminjaman->waktu_kembali);
+															$now = strtotime(date('Y-m-d H:i:s'));
+															if ($now >= $time) {
+																echo "<span class='badge badge-pill badge-danger'>Overtime</span>";
+															} else {
+																echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
+															}
+														} else if ($peminjaman->status == '3') {
+															if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) {
+																echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
+															}
+															else {
+																echo "<span class='badge badge-pill badge-success'>Selesai</span>";
+															}
+														} else if ($peminjaman->status == '4') {
+															echo "<span class='badge badge-pill badge-success'>Selesai</span>";
+														} else if ($peminjaman->status == '5') {
+															echo "<span class='badge badge-pill badge-dark'>Ditolak</span>";
+														} 
+														?>
+													</td>
+													<td>
+														<a href="<?= base_url('peminjaman/detail/' . $peminjaman->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+														<?php if (($peminjaman->status == '1' || $peminjaman->status == '2' || ($peminjaman->status == '3') AND $this->session->login['role'] == 'teknisi')) { ?>
+															<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+														<?php } else if ($peminjaman->status == '1' AND $this->session->login['role'] == 'mahasiswa') { ?>
+															<a onclick="return confirm('apakah anda yakin?')" href="<?= base_url('peminjaman/hapus/' . $peminjaman->id) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+														<?php } ?>
+													</td>
+												</tr>
+											<?php } ?>
+										<?php endforeach ?>
+									</tbody>
+								</table>
+							</div>
+						</div>				
+					</div>
 				</div>
 			</div>
+			<!-- load footer -->
+			<?php $this->load->view('partials/footer.php') ?>
 		</div>
-		<!-- load footer -->
-		<?php $this->load->view('partials/footer.php') ?>
 	</div>
-</div>
-<?php $this->load->view('partials/js.php') ?>
-<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
-<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<?php $this->load->view('partials/js.php') ?>
+	<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 </body>
 </html>

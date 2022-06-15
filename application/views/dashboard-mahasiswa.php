@@ -36,6 +36,14 @@
 							</button>
 						</div>
 					<?php endif ?>
+					<?php if($this->session->flashdata('overtime')) { ?>
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<?= $this->session->flashdata('overtime') ?>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					<?php } ?>
 					<div class="row">
 
 						<!-- Earnings (Monthly) Card Example -->
@@ -114,13 +122,14 @@
 					<div class="row">
 						<div class="col-md-8">
 							<div class="card shadow">
-								<div class="card-header"><strong>Data Tanggungan</strong></div>
+								<div class="card-header"><strong>Data Peminjaman</strong></div>
 								<div class="card-body">
 									<div class="table-responsive">
 										<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 											<thead>
 												<tr>
 													<td>Dosen</td>
+													<td>Mata Kuliah</td>
 													<td>Waktu Pinjam</td>
 													<td>Waktu Kembali</td>
 													<td>Status</td>
@@ -128,23 +137,37 @@
 												</tr>
 											</thead>
 											<tbody>
+												<?php $i = 0; ?>
 												<?php foreach ($all_peminjaman as $peminjaman): ?>
-													<?php if ($peminjaman->status == '3') { ?>
-														<tr>
-															<td><?= $peminjaman->nama_dosen ?></td>
-															<td><?= $peminjaman->waktu_pinjam ?></td>
-															<td><?= $peminjaman->waktu_kembali ?></td>
-															<td><?php
+													<tr>
+														<td><?= $peminjaman->nama_dosen ?></td>
+														<td><?= $peminjaman->nama_mk ?></td>
+														<td><?= $peminjaman->waktu_pinjam ?></td>
+														<td><?= $peminjaman->waktu_kembali ?></td>
+														<td>
+															<?php
 															if ($peminjaman->status == '1') {
-																echo "Diajukan";
+																echo "<span class='badge badge-pill badge-info'>Diajukan</span>";
 															} else if ($peminjaman->status == '2') {
-																echo "Diterima";
+																date_default_timezone_set("Asia/Bangkok");
+																$time = strtotime($peminjaman->waktu_kembali);
+																$now = strtotime(date('Y-m-d H:i:s'));
+																if ($now >= $time) {
+																	echo "<span class='badge badge-pill badge-danger'>Overtime</span>";
+																} else {
+																	echo "<span class='badge badge-pill badge-primary'>Diterima</span>";
+																}
 															} else if ($peminjaman->status == '3') {
-																echo "Tanggungan";
+																if ($peminjaman->status == '3' AND $peminjaman->keterangan != NULL) {
+																	echo "<span class='badge badge-pill badge-warning'>Tanggungan</span>";
+																}
+																else {
+																	echo "<span class='badge badge-pill badge-success'>Selesai</span>";
+																}
 															} else if ($peminjaman->status == '4') {
-																echo "Selesai";
+																echo "<span class='badge badge-pill badge-success'>Selesai</span>";
 															} else if ($peminjaman->status == '5') {
-																echo "Ditolak";
+																echo "<span class='badge badge-pill badge-dark'>Ditolak</span>";
 															} 
 															?>
 														</td>
@@ -152,41 +175,45 @@
 															<a href="<?= base_url('peminjaman/detail/' . $peminjaman->id) ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
 														</td>
 													</tr>
-												<?php } ?>
-											<?php endforeach ?>
-										</tbody>
-									</table>
-								</div>
-							</div>				
+												<?php endforeach ?>
+											</tbody>
+										</table>
+									</div>
+								</div>				
+							</div>
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="card shadow">
-							<div class="card-header"><strong>Notifikasi</strong></div>
-							<div class="card-body">
-								<?php if ($jumlah_tanggungan > 0) { ?>
-									<div class="alert alert-danger alert-dismissible fade show" role="alert">
-										Anda memiliki <strong><?= $jumlah_tanggungan ?> tanggungan</strong> yang harus diselesaikan
-									</div>
-								<?php } ?>
-								<?php if ($jumlah_diterima > 0) { ?>
-									<div class="alert alert-success alert-dismissible fade show" role="alert">
-										<strong><?= $jumlah_diterima ?> pengajuan</strong> peminjaman anda telah diterima
-									</div>
-								<?php } ?>
-							</div>				
+						<div class="col-md-4">
+							<div class="card shadow">
+								<div class="card-header"><strong>Notifikasi</strong></div>
+								<div class="card-body">
+									<?php if ($jumlah_tanggungan > 0) { ?>
+										<div class="alert alert-danger alert-dismissible fade show" role="alert">
+											Anda memiliki <strong><?= $jumlah_tanggungan ?> tanggungan</strong> yang harus diselesaikan
+										</div>
+									<?php } ?>
+									<?php if ($jumlah_diterima > 0) { ?>
+										<div class="alert alert-success alert-dismissible fade show" role="alert">
+											<strong><?= $jumlah_diterima ?> pengajuan</strong> peminjaman anda telah diterima
+										</div>
+									<?php } ?>
+									<?php if ($jumlah_overtime > 0) { ?>
+										<div class="alert alert-danger alert-dismissible fade show" role="alert">
+											Anda memiliki <strong><?= $jumlah_overtime ?> peminjaman</strong> yang sudah overtime.
+										</div>
+									<?php } ?>
+								</div>				
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- load footer -->
+			<?php $this->load->view('partials/footer.php') ?>
 		</div>
-		<!-- load footer -->
-		<?php $this->load->view('partials/footer.php') ?>
 	</div>
-</div>
-<?php $this->load->view('partials/js.php') ?>
-<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
-<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<?php $this->load->view('partials/js.php') ?>
+	<script src="<?= base_url('sb-admin/js/demo/datatables-demo.js') ?>"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 </body>
 </html>

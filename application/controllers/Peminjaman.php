@@ -76,30 +76,30 @@ class Peminjaman extends CI_Controller {
 		$jumlah_barang_dibeli = count($this->input->post('nama_barang_hidden'));
 		
 		if ($this->session->login['role'] != 'teknisi') {
-		$data_peminjaman = [
-			'waktu_pinjam' => $this->input->post('tanggal_pinjam').' '.$this->input->post('jam_pinjam'),
-			'waktu_kembali' => $this->input->post('tanggal_kembali').' '.$this->input->post('jam_kembali'),
-			'id_dosen' => $this->input->post('id_dosen'),
-			'waktu_diajukan' => $this->input->post('waktu_diajukan'),
-			'status' => '1',
-			'id_mk' => $this->input->post('id_mk'),
-			'kelas' => $this->input->post('kelas'),
-			'semester' => $this->input->post('semester'),
-			'id_pengguna' => $this->session->login['id'],
-		];
-	} else {
-		$data_peminjaman = [
-			'waktu_pinjam' => $this->input->post('tanggal_pinjam').' '.$this->input->post('jam_pinjam'),
-			'waktu_kembali' => $this->input->post('tanggal_kembali').' '.$this->input->post('jam_kembali'),
-			'id_dosen' => $this->input->post('id_dosen'),
-			'waktu_diajukan' => $this->input->post('waktu_diajukan'),
-			'status' => '1',
-			'id_mk' => $this->input->post('id_mk'),
-			'kelas' => $this->input->post('kelas'),
-			'semester' => $this->input->post('semester'),
-			'id_pengguna' => $this->input->post('id_pengguna'),
-		];
-	}
+			$data_peminjaman = [
+				'waktu_pinjam' => $this->input->post('tanggal_pinjam').' '.$this->input->post('jam_pinjam'),
+				'waktu_kembali' => $this->input->post('tanggal_kembali').' '.$this->input->post('jam_kembali'),
+				'id_dosen' => $this->input->post('id_dosen'),
+				'waktu_diajukan' => $this->input->post('waktu_diajukan'),
+				'status' => '1',
+				'id_mk' => $this->input->post('id_mk'),
+				'kelas' => $this->input->post('kelas'),
+				'semester' => $this->input->post('semester'),
+				'id_pengguna' => $this->session->login['id'],
+			];
+		} else {
+			$data_peminjaman = [
+				'waktu_pinjam' => $this->input->post('tanggal_pinjam').' '.$this->input->post('jam_pinjam'),
+				'waktu_kembali' => $this->input->post('tanggal_kembali').' '.$this->input->post('jam_kembali'),
+				'id_dosen' => $this->input->post('id_dosen'),
+				'waktu_diajukan' => $this->input->post('waktu_diajukan'),
+				'status' => '1',
+				'id_mk' => $this->input->post('id_mk'),
+				'kelas' => $this->input->post('kelas'),
+				'semester' => $this->input->post('semester'),
+				'id_pengguna' => $this->input->post('id_pengguna'),
+			];
+		}
 
 		if ($this->m_peminjaman->tambah($data_peminjaman)) {
 			$id_peminjaman = $this->m_peminjaman->lihat_waktu_diajukan($this->input->post('waktu_diajukan'));
@@ -153,7 +153,7 @@ class Peminjaman extends CI_Controller {
 	}
 
 	public function update_status($id, $status){
-		if ($status == 5 || $status == 4) {
+		if ($status == 5) {
 			$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join($id);
 			foreach ($all_detail_peminjaman as $detail_peminjaman):
 				$id_barang = $detail_peminjaman->id_barang;
@@ -227,7 +227,6 @@ class Peminjaman extends CI_Controller {
 	}
 
 	public function tanggungan(){
-
 		$id = $this->input->post('id');
 		$status = $this->input->post('status');
 		$keterangan = $this->input->post('keterangan');
@@ -251,6 +250,29 @@ class Peminjaman extends CI_Controller {
 		$this->update_status($id, $status);
 	}
 
+	public function selesai($id, $status, $last_status){
+		if ($last_status == 2) {
+			$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join($id);
+			foreach ($all_detail_peminjaman as $detail_peminjaman):
+				$id_barang = $detail_peminjaman->id_barang;
+				$jumlah = $detail_peminjaman->jumlah;
+				$this->m_barang->plus_stok($jumlah, $id_barang) or die('gagal plus stok');
+			endforeach;
+		} else if ($last_status == 3) {
+			$all_detail_peminjaman = $this->m_detail_peminjaman->lihat_id_peminjaman_join_tanggungan($id);
+			foreach ($all_detail_peminjaman as $detail_peminjaman):
+				$id_detail = $detail_peminjaman->id;
+				$id_barang = $detail_peminjaman->id_barang;
+				$jumlah = $detail_peminjaman->jumlah;
+				$keterangan = $detail_peminjaman->keterangan;
+				if ($keterangan != NULL) {
+					$this->m_barang->plus_stok($jumlah, $id_barang) or die('gagal plus stok');
+				} 
+			endforeach;
+		}
+		$this->update_status($id, $status);
+	}
+
 
 	public function get_all_barang(){
 		$data = $this->m_barang->lihat_nama_barang($_POST['nama_barang']);
@@ -268,9 +290,9 @@ class Peminjaman extends CI_Controller {
 
 		$this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
-	    $this->pdf->setPaper('A4', 'landscape');
-	    $this->pdf->filename = 'Riwayat Transaksi Peminjaman ('.date('d-M-Y').').pdf';
-	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
+		$this->pdf->setPaper('A4', 'potrait');
+		$this->pdf->filename = 'Riwayat Transaksi Peminjaman ('.date('d-M-Y').').pdf';
+		$this->pdf->load_view('peminjaman/rekap_pdf', $data);
 	}
 
 	public function export_rekap_filter(){
@@ -285,8 +307,8 @@ class Peminjaman extends CI_Controller {
 
 		$this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
-	    $this->pdf->setPaper('A4', 'landscape');
-	    $this->pdf->filename = 'Riwayat Transaksi Peminjaman Periode'.$data['periode'].' ('.date('d-M-Y').').pdf';
-	    $this->pdf->load_view('peminjaman/rekap_pdf', $data);
+		$this->pdf->setPaper('A4', 'potrait');
+		$this->pdf->filename = 'Riwayat Transaksi Peminjaman Periode'.$data['periode'].' ('.date('d-M-Y').').pdf';
+		$this->pdf->load_view('peminjaman/rekap_pdf', $data);
 	}
 }
