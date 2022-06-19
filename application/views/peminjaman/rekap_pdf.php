@@ -23,9 +23,9 @@
 		<br>
 		<img src="<?=base_url()?>assets/img/polinema-loss.png" style="width: 80px; margin-left: 3%;">
 		<img src="<?=base_url()?>assets/img/kan-logo.jpg" style="width: 85px; margin-left: 71%;">
-		<div class="col-8 text-center" style="margin-top: -90px; margin-left: 100px;">
+		<div class="col-8 text-center" style="margin-top: -110px; margin-left: 100px;">
 			<span style="font-family: serif; color: black;">
-				<strong>KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN <br> POLITEKNIK NEGERI MALANG </strong> <br> Jalan Soekarno-Hatta No.9 Malang 65141 <br>
+				<strong>KEMENTERIAN RISET, TEKNOLOGI, <br> DAN PENDIDIKAN TINGGI <br> POLITEKNIK NEGERI MALANG </strong> <br> Jalan Soekarno-Hatta No.9 Malang 65141 <br>
 				Telp (0341) 404424-404425 Fax (0341) 404420
 			</span>
 		</div>
