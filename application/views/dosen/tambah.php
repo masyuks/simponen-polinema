@@ -33,7 +33,7 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="kode_dosen"><strong>Nomor Induk</strong></label>
-											<input type="text" name="kode_dosen" placeholder="Masukkan Nomor Induk" autocomplete="off"  class="form-control" required>
+											<input type="number" name="kode_dosen" placeholder="Masukkan Nomor Induk" autocomplete="off"  class="form-control" required>
 										</div>
 										<div class="form-group col-md-6">
 											<label for="nama_dosen"><strong>Nama dosen</strong></label>

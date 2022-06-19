@@ -43,11 +43,11 @@
 		</span>
 		<br> 
 		<br>
-		<table style="font-family: serif; color: black; text-align: center;" border="1" width="98%">
+		<table style="font-family: serif; color: black; text-align: center;" border="1" width="97%">
 			<thead>
 				<tr>
 					<th>NIM</th>
-					<th>Nama Mahasiswa</th>
+					<th>Nama <br> Mahasiswa</th>
 					<th>Kelas</th>
 					<th>Semester</th>
 					<th>Mata Kuliah</th>

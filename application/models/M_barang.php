@@ -30,6 +30,11 @@ class M_barang extends CI_Model{
 		return $query->row();
 	}
 
+	public function cek_kode($kode_barang){
+		$query = $this->db->get_where($this->_table, ['kode_barang' => $kode_barang]);
+		return $query->num_rows();
+	}
+
 	public function tambah($data){
 		return $this->db->insert($this->_table, $data);
 	}

@@ -35,23 +35,38 @@ class Barang extends CI_Controller{
 			redirect($_SERVER['HTTP_REFERER']);
 		}
 
-		if (!empty($_FILES["image"]["name"])) {
-			$config['upload_path']          = './assets/barang';
-			$config['allowed_types']        = 'jpg|png';
-			$config['file_name']            =  $this->input->post('kode_barang');
-			$config['overwrite']			= true;
-			$config['max_size']             = 5120; // 5MB
-			$this->load->library('upload', $config);
+		$cek_kode = $this->m_barang->cek_kode($this->input->post('kode_barang'));
+		if ($cek_kode > 0) {
+			$this->session->set_flashdata('error', 'Kode Barang <strong>Telah</strong> Digunakan!');
+			redirect('barang');
+		} else {
+			if (!empty($_FILES["image"]["name"])) {
+				$config['upload_path']          = './assets/barang';
+				$config['allowed_types']        = 'jpg|png';
+				$config['file_name']            =  $this->input->post('kode_barang');
+				$config['overwrite']			= true;
+				$config['max_size']             = 5120; // 5MB
+				$this->load->library('upload', $config);
 
-			if ($this->upload->do_upload('image')) {
-				$data = [
-					'kode_barang' => $this->input->post('kode_barang'),
-					'nama_barang' => $this->input->post('nama_barang'),
-					'harga' => $this->input->post('harga'),
-					'stok' => $this->input->post('stok'),
-					'jenis' => $this->input->post('jenis'),
-					'path' => $this->upload->data('file_name'),
-				];	
+				if ($this->upload->do_upload('image')) {
+					$data = [
+						'kode_barang' => $this->input->post('kode_barang'),
+						'nama_barang' => $this->input->post('nama_barang'),
+						'harga' => $this->input->post('harga'),
+						'stok' => $this->input->post('stok'),
+						'jenis' => $this->input->post('jenis'),
+						'path' => $this->upload->data('file_name'),
+					];	
+				} else {
+					$data = [
+						'kode_barang' => $this->input->post('kode_barang'),
+						'nama_barang' => $this->input->post('nama_barang'),
+						'harga' => $this->input->post('harga'),
+						'stok' => $this->input->post('stok'),
+						'jenis' => $this->input->post('jenis'),
+						'path' => 'not_found.png',
+					];	
+				}	
 			} else {
 				$data = [
 					'kode_barang' => $this->input->post('kode_barang'),
@@ -61,24 +76,15 @@ class Barang extends CI_Controller{
 					'jenis' => $this->input->post('jenis'),
 					'path' => 'not_found.png',
 				];	
-			}	
-		} else {
-			$data = [
-				'kode_barang' => $this->input->post('kode_barang'),
-				'nama_barang' => $this->input->post('nama_barang'),
-				'harga' => $this->input->post('harga'),
-				'stok' => $this->input->post('stok'),
-				'jenis' => $this->input->post('jenis'),
-				'path' => 'not_found.png',
-			];	
-		}
+			}
 
-		if($this->m_barang->tambah($data)){
-			$this->session->set_flashdata('success', 'Data Barang <strong>Berhasil</strong> Ditambahkan!');
-			redirect('barang');
-		} else {
-			$this->session->set_flashdata('error', 'Data Barang <strong>Gagal</strong> Ditambahkan!');
-			redirect('barang');
+			if($this->m_barang->tambah($data)){
+				$this->session->set_flashdata('success', 'Data Barang <strong>Berhasil</strong> Ditambahkan!');
+				redirect('barang');
+			} else {
+				$this->session->set_flashdata('error', 'Data Barang <strong>Gagal</strong> Ditambahkan!');
+				redirect('barang');
+			}
 		}
 	}
 

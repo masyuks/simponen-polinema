@@ -87,35 +87,81 @@
 					}
 				}
 				for ($i=1; $i <= 8; $i++) { 
-				?>
-				<tr>
-					<td>Semester <?= $i ?></td>
-					<td><?= $semester[$i] ?> Peminjaman Selesai</td>
-				
-				</tr>
+					?>
+					<tr>
+						<td>Semester <?= $i ?></td>
+						<td><?= $semester[$i] ?> Peminjaman Selesai</td>
+
+					</tr>
 				<?php } ?>
-		</tbody>
-	</table>
-	<br>
-	<span style="font-family: serif; color: black; font-size: 15px;">
-		Demikian Surat Pernyataan ini dibuat untuk dapat digunakan sebagaimana mestinya. 
+			</tbody>
+		</table>
+		<br>
+		<span style="font-family: serif; color: black; font-size: 15px;">
+			Demikian Surat Pernyataan ini dibuat untuk dapat digunakan sebagaimana mestinya. 
+		</span>
+	</div>
+	<br><br>
+	<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+		<?php 
+		date_default_timezone_set("Asia/Bangkok");
+		$year = date('Y');
+		$day = date('d');
+		$month = date('m');
+		if ($month == '1') {
+			$name_month = 'Januari';
+		}
+		if ($month == '2') {
+			$name_month = 'Februari';
+		}
+		if ($month == '3') {
+			$name_month = 'Maret';
+		}
+		if ($month == '4') {
+			$name_month = 'April';
+		}
+		if ($month == '5') {
+			$name_month = 'Mei';
+		}
+		if ($month == '6') {
+			$name_month = 'Juni';
+		}
+		if ($month == '7') {
+			$name_month = 'Juli';
+		}
+		if ($month == '8') {
+			$name_month = 'Agustus';
+		}
+		if ($month == '9') {
+			$name_month = 'September';
+		}
+		if ($month == '10') {
+			$name_month = 'Oktober';
+		}
+		if ($month == '11') {
+			$name_month = 'November';
+		}
+		if ($month == '12') {
+			$name_month = 'Desember';
+		} 
+		?>
+		Malang, <?php echo $day.' '.$name_month.' '.$year; ?>
 	</span>
-</div>
-<br><br>
-<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
-	Mengetahui,
-</span>
-<br>
-<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
-	Kepala Laboratorium,
-</span>
-<br><br><br><br>
-<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
-	Usman Z., ST.
-</span>
-<script src="<?= base_url('sb-admin') ?>/vendor/jquery/jquery.min.js"></script>
-<script src="<?= base_url('sb-admin') ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= base_url('sb-admin') ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="<?= base_url('sb-admin') ?>/js/sb-admin-2.min.js"></script>
+	<br>
+	<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+		Mengetahui,
+	</span>
+	<br>
+	<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+		Kepala Laboratorium,
+	</span>
+	<br><br><br><br>
+	<span style="font-family: serif; color: black; font-size: 15px; margin-left: 70%;">
+		Usman Z., ST.
+	</span>
+	<script src="<?= base_url('sb-admin') ?>/vendor/jquery/jquery.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="<?= base_url('sb-admin') ?>/js/sb-admin-2.min.js"></script>
 </body>
 </html>

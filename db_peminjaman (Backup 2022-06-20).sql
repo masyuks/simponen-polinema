@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2022 at 01:20 AM
+-- Generation Time: Jun 15, 2022 at 12:09 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -85,7 +85,7 @@ INSERT INTO `detail_peminjaman` (`id`, `id_peminjaman`, `id_barang`, `jumlah`, `
 
 CREATE TABLE `dosen` (
   `id` int(11) NOT NULL,
-  `kode_dosen` int(11) NOT NULL,
+  `kode_dosen` varchar(20) NOT NULL,
   `nama_dosen` varchar(100) NOT NULL,
   `jabatan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -95,9 +95,9 @@ CREATE TABLE `dosen` (
 --
 
 INSERT INTO `dosen` (`id`, `kode_dosen`, `nama_dosen`, `jabatan`) VALUES
-(2, 101, 'Supri', 'Staff'),
-(3, 111, 'Yono', 'Staff'),
-(4, 103, 'Yusron', 'Dosen');
+(2, '101', 'Supri', 'Staff'),
+(3, '102', 'Yono', 'Staff'),
+(4, '103', 'Yusron', 'Dosen');
 
 -- --------------------------------------------------------
 
@@ -173,7 +173,7 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`id`, `kode_pengguna`, `nama_pengguna`, `username_pengguna`, `password_pengguna`, `email_pengguna`, `jurusan_pengguna`) VALUES
-(3, '1831710093', 'Muhammad Yuki Miftakhurrizqi', 'D3 Manajemen Informatika', '8b72529ec356bfa60828b4da6c2cc610', 'myukimiftakhurrizqi21@gmail.com', 'Teknik Informatika'),
+(3, '1831710093', 'yuki', 'D3 Manajemen Informatika', '8b72529ec356bfa60828b4da6c2cc610', 'myukimiftakhurrizqi21@gmail.com', 'Teknik Informatika'),
 (4, '1831710163', 'Iqbal', 'D3 Manajemen Informatika', 'eedae20fc3c7a6e9c5b1102098771c70', 'iqbal@gmail.com', 'Teknik Informatika'),
 (5, '1841160077', 'Cindy Dwi Puspita Sari', 'D4 Jaringan Telekomunikasi Digital', 'cc4b2066cfef89f2475de1d4da4b29c7', 'cindy@gmail.com', 'Teknik Elektro');
 
