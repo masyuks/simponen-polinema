@@ -75,7 +75,7 @@ class Teknisi extends CI_Controller{
 				'kode_teknisi' => $this->input->post('kode_teknisi'),
 				'nama_teknisi' => $this->input->post('nama_teknisi'),
 				'username_teknisi' => $this->input->post('username_teknisi'),
-				'password_teknisi' => $this->input->post('password_teknisi'),
+				'password_teknisi' => md5($this->input->post('password_teknisi')),
 			];
 		} else {
 			$data = [
