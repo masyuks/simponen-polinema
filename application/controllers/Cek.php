@@ -34,7 +34,7 @@ class Cek extends CI_Controller {
 			$data['jumlah_pengguna'] = $this->m_pengguna->lihat_jumlah_kode($kode_pengguna);
 			if ($data['jumlah_pengguna'] > 0) {
 				$data['data_pengguna'] = $this->m_pengguna->lihat_data_by_kode($kode_pengguna);
-				$data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_mahasiswa_request_kode($kode_pengguna);
+				$data['all_peminjaman'] = $this->m_peminjaman->lihat_join_full_mahasiswa_request_kode_revisi($kode_pengguna);
 				$this->load->library('pdf');
 				$this->pdf->set_option('isRemoteEnabled', true);
 				$this->pdf->setPaper('A4', 'potrait');

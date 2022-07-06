@@ -169,6 +169,18 @@ class M_peminjaman extends CI_Model {
 		return $this->db->get($this->_table)->result();
 	} 
 
+	public function lihat_join_full_mahasiswa_request_kode_revisi($kode_pengguna){
+		$this->db->select('peminjaman.*, teknisi.nama_teknisi, pengguna.nama_pengguna, pengguna.kode_pengguna AS nim, pengguna.username_pengguna, dosen.nama_dosen, barang.nama_barang, barang.kode_barang, detail_peminjaman.jumlah, detail_peminjaman.keterangan, mk.nama_mk');
+		$this->db->join('pengguna','peminjaman.id_pengguna=pengguna.id');
+		$this->db->join('dosen','peminjaman.id_dosen=dosen.id');
+		$this->db->join('mk','peminjaman.id_mk=mk.id');
+		$this->db->join('detail_peminjaman','peminjaman.id=detail_peminjaman.id_peminjaman');
+		$this->db->join('barang','detail_peminjaman.id_barang=barang.id');
+		$this->db->join('teknisi','peminjaman.id_teknisi=teknisi.id', 'left');
+		$this->db->where('kode_pengguna', $kode_pengguna);
+		return $this->db->get($this->_table)->result();
+	} 
+
 	public function kelas(){
 		$this->db->group_by('kelas'); 
 		$this->db->order_by('kelas', 'asc');
